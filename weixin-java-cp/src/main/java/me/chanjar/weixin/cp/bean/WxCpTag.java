@@ -1,7 +1,7 @@
 package me.chanjar.weixin.cp.bean;
 
 import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Created by Daniel Qian
  */
@@ -20,7 +20,8 @@ public class WxCpTag {
     this.id = id;
     this.name = name;
   }
-
+  
+  @JsonProperty(value = "tagname")
   public String getName() {
     return name;
   }
