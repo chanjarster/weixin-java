@@ -1,44 +1,48 @@
 weixin-java-tools
 ===========
 
-微信java开发工具集，本项目主要分为两大块：微信消息路由器、微信Java API
+微信公众号、企业号Java SDK。
 
-特性列表：
+详细文档请看 [wiki](https://github.com/chanjarster/weixin-java-tools/wiki)。
 
-1. 不基于Servlet、和其他MVC框架，仅作为工具使用，提供更多的灵活性
-2. 详尽的单元测试代码，可以拿来当example用
-3. 详尽的javadoc
-4. access token过期自动刷新的功能
-5. 微信服务端繁忙自动重试的功能
-6. 提供微信错误信息的异常处理机制
+## Quick Start
 
+如果要开发公众号（订阅号、服务号）应用，在你的maven项目中添加：
 
-详细文档请看 [wiki](https://github.com/chanjarster/weixin-java-tools/wiki)
-
-# Quickstart
-
-在你的maven项目中添加：
 ```xml
 <dependency>
   <groupId>me.chanjar</groupId>
-  <artifactId>weixin-java-tools</artifactId>
-  <version>1.0.0</version>
+  <artifactId>weixin-java-mp</artifactId>
+  <version>1.1.1</version>
 </dependency>
 ```
 
-## Hello World
-```java
-WxConfigStorage config = new WxInMemoryConfigStorage();
-config.setAppId(...); // 设置微信公众号的appid
-config.setSecret(...); // 设置微信公众号的app secret
-config.setToken(...); // 设置微信公众号的token
+如果要开发企业号应用，在你的maven项目中添加：
 
-WxServiceImpl wxService = new WxServiceImpl();
-wxService.setWxConfigStorage(config);
-
-// 用户的openid在下面地址获得 
-// https://mp.weixin.qq.com/debug/cgi-bin/apiinfo?t=index&type=用户管理&form=获取关注者列表接口%20/user/get 
-String openid = ...; 
-WxCustomMessage message = WxCustomMessage.TEXT().toUser(openid).content("Hello World").build();
-wxService.customMessageSend(message);
+```xml
+<dependency>
+  <groupId>me.chanjar</groupId>
+  <artifactId>weixin-java-cp</artifactId>
+  <version>1.1.1</version>
+</dependency>
 ```
+
+## SNAPSHOT版
+
+本项目的BUG修复和新特性一般会先发布在*-SNAPSHOT版里供大家预览，如果要使用*-SNAPSHOT版，则需要在你的pom.xml中添加这段：
+
+```xml
+<repositories>
+  <repository>
+      <snapshots />
+      <id>sonatype snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+  </repository>
+</repositories>
+```
+
+## 升级指南
+
+* [1.0.3升级指南](https://github.com/chanjarster/weixin-java-tools/wiki/1_0_3升级指南)
+* [1.1.0升级指南](https://github.com/chanjarster/weixin-java-tools/wiki/1_1_0升级指南)
+* [1.1.1升级指南](https://github.com/chanjarster/weixin-java-tools/wiki/1_1_1升级指南)
