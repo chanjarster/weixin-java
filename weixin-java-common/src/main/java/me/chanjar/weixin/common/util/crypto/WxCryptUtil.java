@@ -14,6 +14,7 @@
 package me.chanjar.weixin.common.util.crypto;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -26,9 +27,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 public class WxCryptUtil {
 
@@ -223,6 +224,46 @@ public class WxCryptUtil {
     return xmlContent;
 
   }
+
+
+    public static String createSign(Map<String, String> packageParams, String signKey, String charset) {
+        SortedMap<String, String> sortedMap = new TreeMap<String, String>();
+        Set<String> keys = packageParams.keySet();
+        for (String key : keys) {
+            sortedMap.put(key, packageParams.get(key));
+        }
+        StringBuffer sb = new StringBuffer();
+        Set es = packageParams.entrySet();
+        Iterator it = es.iterator();
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry) it.next();
+            String k = (String) entry.getKey();
+            String v = (String) entry.getValue();
+            if (null != v && !"".equals(v) && !"sign".equals(k)
+                    && !"key".equals(k)) {
+                sb.append(k + "=" + v + "&");
+            }
+        }
+        sb.append("key=" + signKey);
+        String sign = md5Encode(sb.toString(), charset)
+                .toUpperCase();
+        return sign;
+    }
+
+    private static String md5Encode(String origin, String charsetname) {
+        String resultString = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            if (charsetname == null)
+                resultString = Hex.encodeHexString(md.digest(origin
+                        .getBytes()));
+            else
+                resultString = Hex.encodeHexString(md.digest(origin
+                        .getBytes(charsetname)));
+        } catch (Exception exception) {
+        }
+        return resultString;
+    }
 
   /**
    * 将一个数字转换成生成4个字节的网络字节序bytes数组
