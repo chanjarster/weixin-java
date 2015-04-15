@@ -368,9 +368,14 @@ public class WxMpServiceImpl implements WxMpService {
 
     @Override
     public String oauth2buildAuthorizationUrl(String scope, String state) {
+        return oauth2buildAuthorizationUrl(wxMpConfigStorage.getOauth2redirectUri(), scope, state);
+    }
+
+    @Override
+    public String oauth2buildAuthorizationUrl(String redirectUrl, String scope, String state) {
         String url = "https://open.weixin.qq.com/connect/oauth2/authorize?";
         url += "appid=" + wxMpConfigStorage.getAppId();
-        url += "&redirect_uri=" + URIUtil.encodeURIComponent(wxMpConfigStorage.getOauth2redirectUri());
+        url += "&redirect_uri=" + URIUtil.encodeURIComponent(redirectUrl);
         url += "&response_type=code";
         url += "&scope=" + scope;
         if (state != null) {
@@ -616,6 +621,7 @@ public class WxMpServiceImpl implements WxMpService {
         this.maxRetryTimes = maxRetryTimes;
     }
 
+    @Override
     public String getPrepayId(String openId, String outTradeNo, BigDecimal amt, String body, String tradeType, String ip, String callbackUrl) throws Exception {
         String nonce_str = System.currentTimeMillis() + "";
 
@@ -655,7 +661,7 @@ public class WxMpServiceImpl implements WxMpService {
             httpPost.setConfig(config);
         }
 
-        StringEntity entity = new StringEntity(new String(xml.getBytes(), "ISO8859-1"), Consts.UTF_8);
+        StringEntity entity = new StringEntity(xml, Consts.UTF_8);
         httpPost.setEntity(entity);
         CloseableHttpResponse response = httpClient.execute(httpPost);
         InputStream responseContent = InputStreamResponseHandler.INSTANCE.handleResponse(response);
