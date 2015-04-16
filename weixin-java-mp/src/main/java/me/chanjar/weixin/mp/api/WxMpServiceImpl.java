@@ -338,6 +338,19 @@ public class WxMpServiceImpl implements WxMpService {
         return WxMpQrCodeTicket.fromJson(responseContent);
     }
 
+    public WxMpQrCodeTicket qrCodeCreateLastTicket(String scene_str) throws WxErrorException {
+        String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create";
+        JsonObject json = new JsonObject();
+        json.addProperty("action_name", "QR_LIMIT_STR_SCENE");
+        JsonObject actionInfo = new JsonObject();
+        JsonObject scene = new JsonObject();
+        scene.addProperty("scene_str", scene_str);
+        actionInfo.add("scene", scene);
+        json.add("action_info", actionInfo);
+        String responseContent = execute(new SimplePostRequestExecutor(), url, json.toString());
+        return WxMpQrCodeTicket.fromJson(responseContent);
+    }
+
     public File qrCodePicture(WxMpQrCodeTicket ticket) throws WxErrorException {
         String url = "https://mp.weixin.qq.com/cgi-bin/showqrcode";
         return execute(new QrCodeRequestExecutor(), url, ticket);

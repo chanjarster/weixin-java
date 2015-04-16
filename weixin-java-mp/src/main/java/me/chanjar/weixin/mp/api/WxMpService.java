@@ -360,6 +360,8 @@ public interface WxMpService {
      */
     public WxMpQrCodeTicket qrCodeCreateLastTicket(int scene_id) throws WxErrorException;
 
+    public WxMpQrCodeTicket qrCodeCreateLastTicket(String scene_str) throws WxErrorException;
+
     /**
      * <pre>
      * 换取二维码图片文件，jpg格式
