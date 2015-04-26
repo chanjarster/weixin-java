@@ -645,8 +645,6 @@ public class WxMpServiceImpl implements WxMpService {
         packageParams.put("body", body);
         packageParams.put("out_trade_no", outTradeNo);
 
-
-        //这里写的金额为1 分到时修改
         packageParams.put("total_fee", amt.multiply(new BigDecimal(100)).intValue() + "");
         packageParams.put("spbill_create_ip", ip);
         packageParams.put("notify_url", callbackUrl);
