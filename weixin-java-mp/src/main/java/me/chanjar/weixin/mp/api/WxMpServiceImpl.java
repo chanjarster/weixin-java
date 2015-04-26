@@ -22,11 +22,11 @@ import me.chanjar.weixin.common.util.crypto.WxCryptUtil;
 import me.chanjar.weixin.common.util.fs.FileUtils;
 import me.chanjar.weixin.common.util.http.*;
 import me.chanjar.weixin.common.util.json.GsonHelper;
+import me.chanjar.weixin.common.util.xml.XStreamInitializer;
 import me.chanjar.weixin.mp.bean.*;
 import me.chanjar.weixin.mp.bean.result.*;
 import me.chanjar.weixin.mp.util.http.QrCodeRequestExecutor;
 import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.Consts;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -635,7 +635,7 @@ public class WxMpServiceImpl implements WxMpService {
     }
 
     @Override
-    public String getPrepayId(String openId, String outTradeNo, BigDecimal amt, String body, String tradeType, String ip, String callbackUrl) throws Exception {
+    public WxMpPrepayIdResult getPrepayId(String openId, String outTradeNo, BigDecimal amt, String body, String tradeType, String ip, String callbackUrl) {
         String nonce_str = System.currentTimeMillis() + "";
 
         SortedMap<String, String> packageParams = new TreeMap<String, String>();
@@ -674,13 +674,38 @@ public class WxMpServiceImpl implements WxMpService {
 
         StringEntity entity = new StringEntity(xml, Consts.UTF_8);
         httpPost.setEntity(entity);
-        CloseableHttpResponse response = httpClient.execute(httpPost);
-        InputStream responseContent = InputStreamResponseHandler.INSTANCE.handleResponse(response);
-        String lines = IOUtils.toString(responseContent, "UTF-8");
+        CloseableHttpResponse response = null;
+        try {
+            response = httpClient.execute(httpPost);
+            String responseContent = Utf8ResponseHandler.INSTANCE.handleResponse(response);
+            XStream xstream = XStreamInitializer.getInstance();
+            xstream.alias("xml", WxMpPrepayIdResult.class);
+            WxMpPrepayIdResult wxMpPrepayIdResult = (WxMpPrepayIdResult) xstream.fromXML(responseContent);
+            return wxMpPrepayIdResult;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new WxMpPrepayIdResult();
+    }
 
-        /*XStream xStream = new XStream();
-        WxMpPrepayIdResult wxMpPrepayIdResult = (WxMpPrepayIdResult) xStream.fromXML(lines);
-        return wxMpPrepayIdResult.getPrepayId();*/
-        return lines;
+    @Override
+    public Map<String, String> getPayInfo(String openId, String outTradeNo, BigDecimal amt, String body, String tradeType, String ip, String callbackUrl) {
+        WxMpPrepayIdResult wxMpPrepayIdResult = getPrepayId(openId, outTradeNo, amt, body, tradeType, ip, callbackUrl);
+        String prepayId = wxMpPrepayIdResult.getPrepay_id();
+        if (prepayId == null || prepayId.equals("")) {
+            throw new RuntimeException("get prepayid error");
+        }
+
+        Map<String, String> finalpackage = new HashMap<String, String>();
+        String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
+        finalpackage.put("appId", wxMpConfigStorage.getAppId());
+        finalpackage.put("timestamp", timestamp);
+        finalpackage.put("nonceStr", System.currentTimeMillis() + "");
+        finalpackage.put("package", "prepay_id=" + prepayId);
+        finalpackage.put("signType", "MD5");
+
+        String finalSign = WxCryptUtil.createSign(finalpackage, wxMpConfigStorage.getPartnerKey(), "UTF-8");
+        finalpackage.put("sign", finalSign);
+        return finalpackage;
     }
 }

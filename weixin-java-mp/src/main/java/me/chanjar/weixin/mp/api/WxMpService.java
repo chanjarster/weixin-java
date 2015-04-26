@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 微信API的Service
@@ -588,6 +589,7 @@ public interface WxMpService {
      */
     void setMaxRetryTimes(int maxRetryTimes);
 
-    String getPrepayId(String openId, String outTradeNo, BigDecimal amt, String body, String tradeType, String ip, String callbackUrl)  throws Exception;
+    WxMpPrepayIdResult getPrepayId(String openId, String outTradeNo, BigDecimal amt, String body, String tradeType, String ip, String callbackUrl);
+    Map<String, String> getPayInfo(String openId, String outTradeNo, BigDecimal amt, String body, String tradeType, String ip, String callbackUrl);
 
 }
