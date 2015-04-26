@@ -250,17 +250,18 @@ public class WxCryptUtil {
         return sign;
     }
 
-    private static String md5Encode(String origin, String charsetname) {
+    private static String md5Encode(String origin, String charset) {
         String resultString = null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            if (charsetname == null)
+            if (charset == null)
                 resultString = Hex.encodeHexString(md.digest(origin
                         .getBytes()));
             else
                 resultString = Hex.encodeHexString(md.digest(origin
-                        .getBytes(charsetname)));
+                        .getBytes(charset)));
         } catch (Exception exception) {
+            throw new RuntimeException("md5 error");
         }
         return resultString;
     }
