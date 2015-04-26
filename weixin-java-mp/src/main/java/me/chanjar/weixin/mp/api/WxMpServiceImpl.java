@@ -696,16 +696,15 @@ public class WxMpServiceImpl implements WxMpService {
             throw new RuntimeException("get prepayid error");
         }
 
-        Map<String, String> finalpackage = new HashMap<String, String>();
-        String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
-        finalpackage.put("appId", wxMpConfigStorage.getAppId());
-        finalpackage.put("timestamp", timestamp);
-        finalpackage.put("nonceStr", System.currentTimeMillis() + "");
-        finalpackage.put("package", "prepay_id=" + prepayId);
-        finalpackage.put("signType", "MD5");
+        Map<String, String> payInfo = new HashMap<String, String>();
+        payInfo.put("appId", wxMpConfigStorage.getAppId());
+        payInfo.put("timestamp", String.valueOf(System.currentTimeMillis() / 1000));
+        payInfo.put("nonceStr", System.currentTimeMillis() + "");
+        payInfo.put("package", "prepay_id=" + prepayId);
+        payInfo.put("signType", "MD5");
 
-        String finalSign = WxCryptUtil.createSign(finalpackage, wxMpConfigStorage.getPartnerKey(), "UTF-8");
-        finalpackage.put("sign", finalSign);
-        return finalpackage;
+        String finalSign = WxCryptUtil.createSign(payInfo, wxMpConfigStorage.getPartnerKey(), "UTF-8");
+        payInfo.put("sign", finalSign);
+        return payInfo;
     }
 }
