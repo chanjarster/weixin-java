@@ -14,30 +14,30 @@ import java.io.Serializable;
  * @author chanjarster
  */
 public class WxMpPrepayIdResult implements Serializable {
-    private String returnCode;
-    private String returnCsg;
+    private String return_code;
+    private String return_msg;
     private String appid;
-    private String mchId;
-    private String nonceStr;
+    private String mch_id;
+    private String nonce_str;
     private String sign;
-    private String resultCode;
-    private String prepayId;
-    private String tradeType;
+    private String result_code;
+    private String prepay_id;
+    private String trade_type;
 
-    public String getReturnCode() {
-        return returnCode;
+    public String getReturn_code() {
+        return return_code;
     }
 
-    public void setReturnCode(String returnCode) {
-        this.returnCode = returnCode;
+    public void setReturn_code(String return_code) {
+        this.return_code = return_code;
     }
 
-    public String getReturnCsg() {
-        return returnCsg;
+    public String getReturn_msg() {
+        return return_msg;
     }
 
-    public void setReturnCsg(String returnCsg) {
-        this.returnCsg = returnCsg;
+    public void setReturn_msg(String return_msg) {
+        this.return_msg = return_msg;
     }
 
     public String getAppid() {
@@ -48,20 +48,20 @@ public class WxMpPrepayIdResult implements Serializable {
         this.appid = appid;
     }
 
-    public String getMchId() {
-        return mchId;
+    public String getMch_id() {
+        return mch_id;
     }
 
-    public void setMchId(String mchId) {
-        this.mchId = mchId;
+    public void setMch_id(String mch_id) {
+        this.mch_id = mch_id;
     }
 
-    public String getNonceStr() {
-        return nonceStr;
+    public String getNonce_str() {
+        return nonce_str;
     }
 
-    public void setNonceStr(String nonceStr) {
-        this.nonceStr = nonceStr;
+    public void setNonce_str(String nonce_str) {
+        this.nonce_str = nonce_str;
     }
 
     public String getSign() {
@@ -72,27 +72,27 @@ public class WxMpPrepayIdResult implements Serializable {
         this.sign = sign;
     }
 
-    public String getResultCode() {
-        return resultCode;
+    public String getResult_code() {
+        return result_code;
     }
 
-    public void setResultCode(String resultCode) {
-        this.resultCode = resultCode;
+    public void setResult_code(String result_code) {
+        this.result_code = result_code;
     }
 
-    public String getPrepayId() {
-        return prepayId;
+    public String getPrepay_id() {
+        return prepay_id;
     }
 
-    public void setPrepayId(String prepayId) {
-        this.prepayId = prepayId;
+    public void setPrepay_id(String prepay_id) {
+        this.prepay_id = prepay_id;
     }
 
-    public String getTradeType() {
-        return tradeType;
+    public String getTrade_type() {
+        return trade_type;
     }
 
-    public void setTradeType(String tradeType) {
-        this.tradeType = tradeType;
+    public void setTrade_type(String trade_type) {
+        this.trade_type = trade_type;
     }
 }
