@@ -432,6 +432,18 @@ public interface WxMpService {
      */
     public String oauth2buildAuthorizationUrl(String scope, String state);
 
+
+    /**
+     * <pre>
+     * 构造oauth2授权的url连接
+     * 详情请见: http://mp.weixin.qq.com/wiki/index.php?title=网页授权获取用户基本信息
+     * </pre>
+     *
+     * @param url
+     * @param scope
+     * @param state
+     * @return code
+     */
     public String oauth2buildAuthorizationUrl(String url, String scope, String state);
 
     /**
