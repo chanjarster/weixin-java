@@ -228,24 +228,23 @@ public class WxCryptUtil {
 
     public static String createSign(Map<String, String> packageParams, String signKey, String charset) {
         SortedMap<String, String> sortedMap = new TreeMap<String, String>();
-        Set<String> keys = packageParams.keySet();
-        for (String key : keys) {
-            sortedMap.put(key, packageParams.get(key));
-        }
-        StringBuffer sb = new StringBuffer();
-        Set es = packageParams.entrySet();
-        Iterator it = es.iterator();
+        sortedMap.putAll(packageParams);
+
+        Iterator it = sortedMap.entrySet().iterator();
+
+        StringBuffer toSign = new StringBuffer();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
             String k = (String) entry.getKey();
             String v = (String) entry.getValue();
             if (null != v && !"".equals(v) && !"sign".equals(k)
                     && !"key".equals(k)) {
-                sb.append(k + "=" + v + "&");
+                toSign.append(k + "=" + v + "&");
             }
         }
-        sb.append("key=" + signKey);
-        String sign = md5Encode(sb.toString(), charset)
+        toSign.append("key=" + signKey);
+        System.out.println(toSign.toString());
+        String sign = md5Encode(toSign.toString(), charset)
                 .toUpperCase();
         return sign;
     }
