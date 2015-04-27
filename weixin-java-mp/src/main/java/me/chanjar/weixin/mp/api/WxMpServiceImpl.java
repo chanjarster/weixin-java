@@ -674,9 +674,8 @@ public class WxMpServiceImpl implements WxMpService {
 
         StringEntity entity = new StringEntity(xml, Consts.UTF_8);
         httpPost.setEntity(entity);
-        CloseableHttpResponse response = null;
         try {
-            response = httpClient.execute(httpPost);
+            CloseableHttpResponse response = httpClient.execute(httpPost);
             String responseContent = Utf8ResponseHandler.INSTANCE.handleResponse(response);
             XStream xstream = XStreamInitializer.getInstance();
             xstream.alias("xml", WxMpPrepayIdResult.class);
@@ -698,7 +697,7 @@ public class WxMpServiceImpl implements WxMpService {
 
         Map<String, String> payInfo = new HashMap<String, String>();
         payInfo.put("appId", wxMpConfigStorage.getAppId());
-        payInfo.put("timestamp", String.valueOf(System.currentTimeMillis() / 1000));
+        payInfo.put("timeStamp", String.valueOf(System.currentTimeMillis() / 1000));
         payInfo.put("nonceStr", System.currentTimeMillis() + "");
         payInfo.put("package", "prepay_id=" + prepayId);
         payInfo.put("signType", "MD5");
