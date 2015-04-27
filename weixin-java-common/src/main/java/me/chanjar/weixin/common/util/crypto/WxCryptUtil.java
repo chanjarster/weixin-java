@@ -230,16 +230,16 @@ public class WxCryptUtil {
         SortedMap<String, String> sortedMap = new TreeMap<String, String>();
         sortedMap.putAll(packageParams);
 
-        Iterator it = sortedMap.entrySet().iterator();
+        List<String> keys = new ArrayList<String>(packageParams.keySet());
+        Collections.sort(keys);
+
 
         StringBuffer toSign = new StringBuffer();
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
-            String k = (String) entry.getKey();
-            String v = (String) entry.getValue();
-            if (null != v && !"".equals(v) && !"sign".equals(k)
-                    && !"key".equals(k)) {
-                toSign.append(k + "=" + v + "&");
+        for (String key : keys) {
+            String value = packageParams.get(key);
+            if (null != value && !"".equals(value) && !"sign".equals(key)
+                    && !"key".equals(key)) {
+                toSign.append(key + "=" + value + "&");
             }
         }
         toSign.append("key=" + signKey);
