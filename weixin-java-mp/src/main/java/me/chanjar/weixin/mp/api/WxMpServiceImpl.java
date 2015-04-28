@@ -688,7 +688,7 @@ public class WxMpServiceImpl implements WxMpService {
     }
 
     @Override
-    public Map<String, String> getPayInfo(String openId, String outTradeNo, BigDecimal amt, String body, String tradeType, String ip, String callbackUrl) {
+    public Map<String, String> getJSSDKPayInfo(String openId, String outTradeNo, BigDecimal amt, String body, String tradeType, String ip, String callbackUrl) {
         WxMpPrepayIdResult wxMpPrepayIdResult = getPrepayId(openId, outTradeNo, amt, body, tradeType, ip, callbackUrl);
         String prepayId = wxMpPrepayIdResult.getPrepay_id();
         if (prepayId == null || prepayId.equals("")) {
