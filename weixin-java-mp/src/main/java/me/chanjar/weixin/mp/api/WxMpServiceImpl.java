@@ -699,7 +699,7 @@ public class WxMpServiceImpl implements WxMpService {
         payInfo.put("appId", wxMpConfigStorage.getAppId());
         // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
         payInfo.put("timeStamp", String.valueOf(System.currentTimeMillis() / 1000));
-        payInfo.put("nonceStr", System.currentTimeMillis() + "");
+        payInfo.put("nonceStr", RandomUtils.getRandomStr());
         payInfo.put("package", "prepay_id=" + prepayId);
         payInfo.put("signType", "MD5");
 
