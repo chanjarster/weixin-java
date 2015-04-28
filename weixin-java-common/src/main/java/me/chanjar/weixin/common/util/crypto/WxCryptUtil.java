@@ -225,7 +225,13 @@ public class WxCryptUtil {
 
   }
 
-
+    /**
+     * 微信公众号支付签名算法(详见:http://pay.weixin.qq.com/wiki/doc/api/index.php?chapter=4_3)
+     * @param packageParams 原始参数
+     * @param signKey 加密Key(即 商户Key)
+     * @param charset 编码
+     * @return 签名字符串
+     */
     public static String createSign(Map<String, String> packageParams, String signKey, String charset) {
         SortedMap<String, String> sortedMap = new TreeMap<String, String>();
         sortedMap.putAll(packageParams);
