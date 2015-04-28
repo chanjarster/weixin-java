@@ -14,6 +14,7 @@
 package me.chanjar.weixin.common.util.crypto;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -26,9 +27,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 public class WxCryptUtil {
 
@@ -223,6 +224,52 @@ public class WxCryptUtil {
     return xmlContent;
 
   }
+
+    /**
+     * 微信公众号支付签名算法(详见:http://pay.weixin.qq.com/wiki/doc/api/index.php?chapter=4_3)
+     * @param packageParams 原始参数
+     * @param signKey 加密Key(即 商户Key)
+     * @param charset 编码
+     * @return 签名字符串
+     */
+    public static String createSign(Map<String, String> packageParams, String signKey, String charset) {
+        SortedMap<String, String> sortedMap = new TreeMap<String, String>();
+        sortedMap.putAll(packageParams);
+
+        List<String> keys = new ArrayList<String>(packageParams.keySet());
+        Collections.sort(keys);
+
+
+        StringBuffer toSign = new StringBuffer();
+        for (String key : keys) {
+            String value = packageParams.get(key);
+            if (null != value && !"".equals(value) && !"sign".equals(key)
+                    && !"key".equals(key)) {
+                toSign.append(key + "=" + value + "&");
+            }
+        }
+        toSign.append("key=" + signKey);
+        System.out.println(toSign.toString());
+        String sign = md5Encode(toSign.toString(), charset)
+                .toUpperCase();
+        return sign;
+    }
+
+    private static String md5Encode(String origin, String charset) {
+        String resultString = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            if (charset == null)
+                resultString = Hex.encodeHexString(md.digest(origin
+                        .getBytes()));
+            else
+                resultString = Hex.encodeHexString(md.digest(origin
+                        .getBytes(charset)));
+        } catch (Exception exception) {
+            throw new RuntimeException("md5 error");
+        }
+        return resultString;
+    }
 
   /**
    * 将一个数字转换成生成4个字节的网络字节序bytes数组
