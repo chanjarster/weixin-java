@@ -10,6 +10,7 @@ import me.chanjar.weixin.common.api.WxMessageDuplicateChecker;
 import me.chanjar.weixin.common.api.WxMessageInMemoryDuplicateChecker;
 import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -156,7 +157,8 @@ public class WxMpMessageRouter {
     }
 
     WxMpXmlOutMessage res = null;
-    final List<Future> futures = new ArrayList<Future>();
+    @SuppressWarnings("rawtypes")
+	final List<Future> futures = new ArrayList<Future>();
     for (final WxMpMessageRouterRule rule : matchRules) {
       // 返回最后一个非异步的rule的执行结果
       if(rule.isAsync()) {
@@ -179,7 +181,7 @@ public class WxMpMessageRouter {
       executorService.submit(new Runnable() {
         @Override
         public void run() {
-          for (Future future : futures) {
+          for (@SuppressWarnings("rawtypes") Future future : futures) {
             try {
               future.get();
               log.debug("End session access: async=true, sessionId={}", wxMessage.getFromUserName());

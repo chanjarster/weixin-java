@@ -8,15 +8,18 @@
  */
 package me.chanjar.weixin.mp.util.json;
 
-import com.google.gson.*;
-import me.chanjar.weixin.common.util.json.GsonHelper;
-import me.chanjar.weixin.mp.bean.result.WxMpMassUploadResult;
-import me.chanjar.weixin.mp.bean.result.WxMpUserCumulate;
-import me.chanjar.weixin.mp.bean.result.WxMpUserSummary;
-
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
+import me.chanjar.weixin.common.util.json.GsonHelper;
+import me.chanjar.weixin.mp.bean.result.WxMpUserCumulate;
+
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 
 /**
  * 

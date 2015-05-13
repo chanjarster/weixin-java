@@ -1,73 +1,72 @@
 package me.chanjar.weixin.mp.bean.result;
 
-import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
-
 import java.io.Serializable;
+
+import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
 
 public class WxMpOAuth2AccessToken implements Serializable {
 
-  private String accessToken;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-  private int expiresIn = -1;
+	private String accessToken;
 
-  private String refreshToken;
+	private int expiresIn = -1;
 
-  private String openId;
+	private String refreshToken;
 
-  private String scope;
+	private String openId;
 
-  public String getRefreshToken() {
-    return refreshToken;
-  }
+	private String scope;
 
-  public void setRefreshToken(String refreshToken) {
-    this.refreshToken = refreshToken;
-  }
+	public String getRefreshToken() {
+		return refreshToken;
+	}
 
-  public String getOpenId() {
-    return openId;
-  }
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
+	}
 
-  public void setOpenId(String openId) {
-    this.openId = openId;
-  }
+	public String getOpenId() {
+		return openId;
+	}
 
-  public String getScope() {
-    return scope;
-  }
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
 
-  public void setScope(String scope) {
-    this.scope = scope;
-  }
+	public String getScope() {
+		return scope;
+	}
 
-  public String getAccessToken() {
-    return accessToken;
-  }
+	public void setScope(String scope) {
+		this.scope = scope;
+	}
 
-  public void setAccessToken(String accessToken) {
-    this.accessToken = accessToken;
-  }
+	public String getAccessToken() {
+		return accessToken;
+	}
 
-  public int getExpiresIn() {
-    return expiresIn;
-  }
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
 
-  public void setExpiresIn(int expiresIn) {
-    this.expiresIn = expiresIn;
-  }
+	public int getExpiresIn() {
+		return expiresIn;
+	}
 
-  public static WxMpOAuth2AccessToken fromJson(String json) {
-    return WxMpGsonBuilder.create().fromJson(json, WxMpOAuth2AccessToken.class);
-  }
+	public void setExpiresIn(int expiresIn) {
+		this.expiresIn = expiresIn;
+	}
 
-  @Override
-  public String toString() {
-    return "WxMpOAuth2AccessToken{" +
-        "accessToken='" + accessToken + '\'' +
-        ", expiresTime=" + expiresIn +
-        ", refreshToken='" + refreshToken + '\'' +
-        ", openId='" + openId + '\'' +
-        ", scope='" + scope + '\'' +
-        '}';
-  }
+	public static WxMpOAuth2AccessToken fromJson(String json) {
+		return WxMpGsonBuilder.create().fromJson(json, WxMpOAuth2AccessToken.class);
+	}
+
+	@Override
+	public String toString() {
+		return "WxMpOAuth2AccessToken{" + "accessToken='" + accessToken + '\'' + ", expiresTime=" + expiresIn + ", refreshToken='" + refreshToken + '\'' + ", openId='" + openId + '\'' + ", scope='" + scope + '\'' + '}';
+	}
 }

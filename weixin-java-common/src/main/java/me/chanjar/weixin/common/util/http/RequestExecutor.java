@@ -2,12 +2,11 @@ package me.chanjar.weixin.common.util.http;
 
 import java.io.IOException;
 
+import me.chanjar.weixin.common.exception.WxErrorException;
+
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-
-import me.chanjar.weixin.common.exception.WxErrorException;
 
 /**
  * http请求执行器

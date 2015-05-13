@@ -11,53 +11,53 @@ import java.util.Date;
  */
 public class WxMpUserSummary implements Serializable {
 
-  private Date refDate;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-  private Integer userSource;
+	private Date refDate;
 
-  private Integer newUser;
+	private Integer userSource;
 
-  private Integer cancelUser;
+	private Integer newUser;
 
-  public Date getRefDate() {
-    return refDate;
-  }
+	private Integer cancelUser;
 
-  public void setRefDate(Date refDate) {
-    this.refDate = refDate;
-  }
+	public Date getRefDate() {
+		return refDate;
+	}
 
-  public Integer getUserSource() {
-    return userSource;
-  }
+	public void setRefDate(Date refDate) {
+		this.refDate = refDate;
+	}
 
-  public void setUserSource(Integer userSource) {
-    this.userSource = userSource;
-  }
+	public Integer getUserSource() {
+		return userSource;
+	}
 
-  public Integer getNewUser() {
-    return newUser;
-  }
+	public void setUserSource(Integer userSource) {
+		this.userSource = userSource;
+	}
 
-  public void setNewUser(Integer newUser) {
-    this.newUser = newUser;
-  }
+	public Integer getNewUser() {
+		return newUser;
+	}
 
-  public Integer getCancelUser() {
-    return cancelUser;
-  }
+	public void setNewUser(Integer newUser) {
+		this.newUser = newUser;
+	}
 
-  public void setCancelUser(Integer cancelUser) {
-    this.cancelUser = cancelUser;
-  }
+	public Integer getCancelUser() {
+		return cancelUser;
+	}
 
-  @Override
-  public String toString() {
-    return "WxMpUserSummary{" +
-        "refDate=" + refDate +
-        ", userSource=" + userSource +
-        ", newUser=" + newUser +
-        ", cancelUser=" + cancelUser +
-        '}';
-  }
+	public void setCancelUser(Integer cancelUser) {
+		this.cancelUser = cancelUser;
+	}
+
+	@Override
+	public String toString() {
+		return "WxMpUserSummary{" + "refDate=" + refDate + ", userSource=" + userSource + ", newUser=" + newUser + ", cancelUser=" + cancelUser + '}';
+	}
 }

@@ -1,123 +1,128 @@
 package me.chanjar.weixin.mp.bean;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.util.xml.XStreamCDataConverter;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 @XStreamAlias("xml")
 public class WxMpXmlOutMusicMessage extends WxMpXmlOutMessage {
 
-  @XStreamAlias("Music")
-  protected final Music music = new Music();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@XStreamAlias("Music")
+	protected final Music music = new Music();
 
-  public WxMpXmlOutMusicMessage() {
-    this.msgType = WxConsts.XML_MSG_MUSIC;
-  }
+	public WxMpXmlOutMusicMessage() {
+		this.msgType = WxConsts.XML_MSG_MUSIC;
+	}
 
-  public String getTitle() {
-    return music.getTitle();
-  }
+	public String getTitle() {
+		return music.getTitle();
+	}
 
-  public void setTitle(String title) {
-    music.setTitle(title);
-  }
+	public void setTitle(String title) {
+		music.setTitle(title);
+	}
 
-  public String getDescription() {
-    return music.getDescription();
-  }
+	public String getDescription() {
+		return music.getDescription();
+	}
 
-  public void setDescription(String description) {
-    music.setDescription(description);
-  }
-  
-  public String getThumbMediaId() {
-    return music.getThumbMediaId();
-  }
+	public void setDescription(String description) {
+		music.setDescription(description);
+	}
 
-  public void setThumbMediaId(String thumbMediaId) {
-    music.setThumbMediaId(thumbMediaId);
-  }
+	public String getThumbMediaId() {
+		return music.getThumbMediaId();
+	}
 
-  public String getMusicUrl() {
-    return music.getMusicUrl();
-  }
+	public void setThumbMediaId(String thumbMediaId) {
+		music.setThumbMediaId(thumbMediaId);
+	}
 
-  public void setMusicUrl(String musicUrl) {
-    music.setMusicUrl(musicUrl);
-  }
+	public String getMusicUrl() {
+		return music.getMusicUrl();
+	}
 
-  public String getHqMusicUrl() {
-    return music.getHqMusicUrl();
-  }
+	public void setMusicUrl(String musicUrl) {
+		music.setMusicUrl(musicUrl);
+	}
 
-  public void setHqMusicUrl(String hqMusicUrl) {
-    music.setHqMusicUrl(hqMusicUrl);
-  }
-  
-  @XStreamAlias("Music")
-  public static class Music {
-    
-    @XStreamAlias("Title")
-    @XStreamConverter(value=XStreamCDataConverter.class)
-    private String title;
+	public String getHqMusicUrl() {
+		return music.getHqMusicUrl();
+	}
 
-    @XStreamAlias("Description")
-    @XStreamConverter(value=XStreamCDataConverter.class)
-    private String description;
+	public void setHqMusicUrl(String hqMusicUrl) {
+		music.setHqMusicUrl(hqMusicUrl);
+	}
 
-    @XStreamAlias("ThumbMediaId")
-    @XStreamConverter(value=XStreamCDataConverter.class)
-    private String thumbMediaId;
-    
-    @XStreamAlias("MusicUrl")
-    @XStreamConverter(value=XStreamCDataConverter.class)
-    private String musicUrl;
-    
-    @XStreamAlias("HQMusicUrl")
-    @XStreamConverter(value=XStreamCDataConverter.class)
-    private String hqMusicUrl;
-    
-    public String getTitle() {
-      return title;
-    }
+	@XStreamAlias("Music")
+	public static class Music {
 
-    public void setTitle(String title) {
-      this.title = title;
-    }
+		@XStreamAlias("Title")
+		@XStreamConverter(value = XStreamCDataConverter.class)
+		private String title;
 
-    public String getDescription() {
-      return description;
-    }
+		@XStreamAlias("Description")
+		@XStreamConverter(value = XStreamCDataConverter.class)
+		private String description;
 
-    public void setDescription(String description) {
-      this.description = description;
-    }
+		@XStreamAlias("ThumbMediaId")
+		@XStreamConverter(value = XStreamCDataConverter.class)
+		private String thumbMediaId;
 
-    public String getThumbMediaId() {
-      return thumbMediaId;
-    }
+		@XStreamAlias("MusicUrl")
+		@XStreamConverter(value = XStreamCDataConverter.class)
+		private String musicUrl;
 
-    public void setThumbMediaId(String thumbMediaId) {
-      this.thumbMediaId = thumbMediaId;
-    }
+		@XStreamAlias("HQMusicUrl")
+		@XStreamConverter(value = XStreamCDataConverter.class)
+		private String hqMusicUrl;
 
-    public String getMusicUrl() {
-      return musicUrl;
-    }
+		public String getTitle() {
+			return title;
+		}
 
-    public void setMusicUrl(String musicUrl) {
-      this.musicUrl = musicUrl;
-    }
+		public void setTitle(String title) {
+			this.title = title;
+		}
 
-    public String getHqMusicUrl() {
-      return hqMusicUrl;
-    }
+		public String getDescription() {
+			return description;
+		}
 
-    public void setHqMusicUrl(String hqMusicUrl) {
-      this.hqMusicUrl = hqMusicUrl;
-    }
-    
-  }
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+		public String getThumbMediaId() {
+			return thumbMediaId;
+		}
+
+		public void setThumbMediaId(String thumbMediaId) {
+			this.thumbMediaId = thumbMediaId;
+		}
+
+		public String getMusicUrl() {
+			return musicUrl;
+		}
+
+		public void setMusicUrl(String musicUrl) {
+			this.musicUrl = musicUrl;
+		}
+
+		public String getHqMusicUrl() {
+			return hqMusicUrl;
+		}
+
+		public void setHqMusicUrl(String hqMusicUrl) {
+			this.hqMusicUrl = hqMusicUrl;
+		}
+
+	}
 
 }

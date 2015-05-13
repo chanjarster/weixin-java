@@ -1,84 +1,88 @@
 package me.chanjar.weixin.mp.bean;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.util.xml.XStreamCDataConverter;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 @XStreamAlias("xml")
 public class WxMpXmlOutVideoMessage extends WxMpXmlOutMessage {
 
-  @XStreamAlias("Video")
-  protected final Video video = new Video();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@XStreamAlias("Video")
+	protected final Video video = new Video();
 
-  public WxMpXmlOutVideoMessage() {
-    this.msgType = WxConsts.XML_MSG_VIDEO;
-  }
+	public WxMpXmlOutVideoMessage() {
+		this.msgType = WxConsts.XML_MSG_VIDEO;
+	}
 
-  public String getMediaId() {
-    return video.getMediaId();
-  }
+	public String getMediaId() {
+		return video.getMediaId();
+	}
 
-  public void setMediaId(String mediaId) {
-    video.setMediaId(mediaId);
-  }
+	public void setMediaId(String mediaId) {
+		video.setMediaId(mediaId);
+	}
 
-  public String getTitle() {
-    return video.getTitle();
-  }
+	public String getTitle() {
+		return video.getTitle();
+	}
 
-  public void setTitle(String title) {
-    video.setTitle(title);
-  }
+	public void setTitle(String title) {
+		video.setTitle(title);
+	}
 
-  public String getDescription() {
-    return video.getDescription();
-  }
+	public String getDescription() {
+		return video.getDescription();
+	}
 
-  public void setDescription(String description) {
-    video.setDescription(description);
-  }
-  
+	public void setDescription(String description) {
+		video.setDescription(description);
+	}
 
-  @XStreamAlias("Video")
-    public static class Video {
-    
-    @XStreamAlias("MediaId")
-    @XStreamConverter(value=XStreamCDataConverter.class)
-    private String mediaId;
+	@XStreamAlias("Video")
+	public static class Video {
 
-    @XStreamAlias("Title")
-    @XStreamConverter(value=XStreamCDataConverter.class)
-    private String title;
+		@XStreamAlias("MediaId")
+		@XStreamConverter(value = XStreamCDataConverter.class)
+		private String mediaId;
 
-    @XStreamAlias("Description")
-    @XStreamConverter(value=XStreamCDataConverter.class)
-    private String description;
+		@XStreamAlias("Title")
+		@XStreamConverter(value = XStreamCDataConverter.class)
+		private String title;
 
-    public String getMediaId() {
-      return mediaId;
-    }
+		@XStreamAlias("Description")
+		@XStreamConverter(value = XStreamCDataConverter.class)
+		private String description;
 
-    public void setMediaId(String mediaId) {
-      this.mediaId = mediaId;
-    }
+		public String getMediaId() {
+			return mediaId;
+		}
 
-    public String getTitle() {
-      return title;
-    }
+		public void setMediaId(String mediaId) {
+			this.mediaId = mediaId;
+		}
 
-    public void setTitle(String title) {
-      this.title = title;
-    }
+		public String getTitle() {
+			return title;
+		}
 
-    public String getDescription() {
-      return description;
-    }
+		public void setTitle(String title) {
+			this.title = title;
+		}
 
-    public void setDescription(String description) {
-      this.description = description;
-    }
-    
-  }
+		public String getDescription() {
+			return description;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+	}
 
 }

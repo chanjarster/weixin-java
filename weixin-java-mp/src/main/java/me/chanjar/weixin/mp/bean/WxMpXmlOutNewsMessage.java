@@ -1,92 +1,96 @@
 package me.chanjar.weixin.mp.bean;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
+import java.util.ArrayList;
+import java.util.List;
+
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.util.xml.XStreamCDataConverter;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 @XStreamAlias("xml")
 public class WxMpXmlOutNewsMessage extends WxMpXmlOutMessage {
 
-  @XStreamAlias("ArticleCount")
-  protected int articleCount;
-  
-  @XStreamAlias("Articles")
-  protected final List<Item> articles = new ArrayList<Item>();
-  
-  public WxMpXmlOutNewsMessage() {
-    this.msgType = WxConsts.XML_MSG_NEWS;
-  }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-  public int getArticleCount() {
-    return articleCount;
-  }
+	@XStreamAlias("ArticleCount")
+	protected int articleCount;
 
-  public void addArticle(Item item) {
-    this.articles.add(item);
-    this.articleCount = this.articles.size();
-  }
-  
-  public List<Item> getArticles() {
-    return articles;
-  }
-  
-  
-  @XStreamAlias("item")
-  public static class Item {
-    
-    @XStreamAlias("Title")
-    @XStreamConverter(value=XStreamCDataConverter.class)
-    private String Title;
+	@XStreamAlias("Articles")
+	protected final List<Item> articles = new ArrayList<Item>();
 
-    @XStreamAlias("Description")
-    @XStreamConverter(value=XStreamCDataConverter.class)
-    private String Description;
+	public WxMpXmlOutNewsMessage() {
+		this.msgType = WxConsts.XML_MSG_NEWS;
+	}
 
-    @XStreamAlias("PicUrl")
-    @XStreamConverter(value=XStreamCDataConverter.class)
-    private String PicUrl;
-    
-    @XStreamAlias("Url")
-    @XStreamConverter(value=XStreamCDataConverter.class)
-    private String Url;
-    
-    public String getTitle() {
-      return Title;
-    }
+	public int getArticleCount() {
+		return articleCount;
+	}
 
-    public void setTitle(String title) {
-      Title = title;
-    }
+	public void addArticle(Item item) {
+		this.articles.add(item);
+		this.articleCount = this.articles.size();
+	}
 
-    public String getDescription() {
-      return Description;
-    }
+	public List<Item> getArticles() {
+		return articles;
+	}
 
-    public void setDescription(String description) {
-      Description = description;
-    }
+	@XStreamAlias("item")
+	public static class Item {
 
-    public String getPicUrl() {
-      return PicUrl;
-    }
+		@XStreamAlias("Title")
+		@XStreamConverter(value = XStreamCDataConverter.class)
+		private String Title;
 
-    public void setPicUrl(String picUrl) {
-      PicUrl = picUrl;
-    }
+		@XStreamAlias("Description")
+		@XStreamConverter(value = XStreamCDataConverter.class)
+		private String Description;
 
-    public String getUrl() {
-      return Url;
-    }
+		@XStreamAlias("PicUrl")
+		@XStreamConverter(value = XStreamCDataConverter.class)
+		private String PicUrl;
 
-    public void setUrl(String url) {
-      Url = url;
-    }
+		@XStreamAlias("Url")
+		@XStreamConverter(value = XStreamCDataConverter.class)
+		private String Url;
 
-  }
+		public String getTitle() {
+			return Title;
+		}
 
+		public void setTitle(String title) {
+			Title = title;
+		}
+
+		public String getDescription() {
+			return Description;
+		}
+
+		public void setDescription(String description) {
+			Description = description;
+		}
+
+		public String getPicUrl() {
+			return PicUrl;
+		}
+
+		public void setPicUrl(String picUrl) {
+			PicUrl = picUrl;
+		}
+
+		public String getUrl() {
+			return Url;
+		}
+
+		public void setUrl(String url) {
+			Url = url;
+		}
+
+	}
 
 }

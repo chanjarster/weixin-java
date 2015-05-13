@@ -1,33 +1,38 @@
 package me.chanjar.weixin.common.bean;
 
-import me.chanjar.weixin.common.util.json.WxGsonBuilder;
-
 import java.io.Serializable;
+
+import me.chanjar.weixin.common.util.json.WxGsonBuilder;
 
 public class WxAccessToken implements Serializable {
 
-  private String accessToken;
-  
-  private int expiresIn = -1;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-  public String getAccessToken() {
-    return accessToken;
-  }
+	private String accessToken;
 
-  public void setAccessToken(String accessToken) {
-    this.accessToken = accessToken;
-  }
+	private int expiresIn = -1;
 
-  public int getExpiresIn() {
-    return expiresIn;
-  }
+	public String getAccessToken() {
+		return accessToken;
+	}
 
-  public void setExpiresIn(int expiresIn) {
-    this.expiresIn = expiresIn;
-  }
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
 
-  public static WxAccessToken fromJson(String json) {
-    return WxGsonBuilder.create().fromJson(json, WxAccessToken.class);
-  }
-  
+	public int getExpiresIn() {
+		return expiresIn;
+	}
+
+	public void setExpiresIn(int expiresIn) {
+		this.expiresIn = expiresIn;
+	}
+
+	public static WxAccessToken fromJson(String json) {
+		return WxGsonBuilder.create().fromJson(json, WxAccessToken.class);
+	}
+
 }

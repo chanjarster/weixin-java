@@ -7,54 +7,59 @@ import java.io.Serializable;
  */
 public class WxJsapiSignature implements Serializable {
 
-  private String noncestr;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-  private String jsapiTicket;
+	private String noncestr;
 
-  private long timestamp;
+	private String jsapiTicket;
 
-  private String url;
+	private long timestamp;
 
-  private String signature;
+	private String url;
 
-  public String getSignature() {
-    return signature;
-  }
+	private String signature;
 
-  public void setSignature(String signature) {
-    this.signature = signature;
-  }
+	public String getSignature() {
+		return signature;
+	}
 
-  public String getNoncestr() {
-    return noncestr;
-  }
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
 
-  public void setNoncestr(String noncestr) {
-    this.noncestr = noncestr;
-  }
+	public String getNoncestr() {
+		return noncestr;
+	}
 
-  public String getJsapiTicket() {
-    return jsapiTicket;
-  }
+	public void setNoncestr(String noncestr) {
+		this.noncestr = noncestr;
+	}
 
-  public void setJsapiTicket(String jsapiTicket) {
-    this.jsapiTicket = jsapiTicket;
-  }
+	public String getJsapiTicket() {
+		return jsapiTicket;
+	}
 
-  public long getTimestamp() {
-    return timestamp;
-  }
+	public void setJsapiTicket(String jsapiTicket) {
+		this.jsapiTicket = jsapiTicket;
+	}
 
-  public void setTimestamp(long timestamp) {
-    this.timestamp = timestamp;
-  }
+	public long getTimestamp() {
+		return timestamp;
+	}
 
-  public String getUrl() {
-    return url;
-  }
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
 
-  public void setUrl(String url) {
-    this.url = url;
-  }
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 }

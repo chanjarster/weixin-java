@@ -11,31 +11,33 @@ import java.util.Date;
  */
 public class WxMpUserCumulate implements Serializable {
 
-  private Date refDate;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-  private Integer cumulateUser;
+	private Date refDate;
 
-  public Date getRefDate() {
-    return refDate;
-  }
+	private Integer cumulateUser;
 
-  public void setRefDate(Date refDate) {
-    this.refDate = refDate;
-  }
+	public Date getRefDate() {
+		return refDate;
+	}
 
-  public Integer getCumulateUser() {
-    return cumulateUser;
-  }
+	public void setRefDate(Date refDate) {
+		this.refDate = refDate;
+	}
 
-  public void setCumulateUser(Integer cumulateUser) {
-    this.cumulateUser = cumulateUser;
-  }
+	public Integer getCumulateUser() {
+		return cumulateUser;
+	}
 
-  @Override
-  public String toString() {
-    return "WxMpUserCumulate{" +
-        "refDate=" + refDate +
-        ", cumulateUser=" + cumulateUser +
-        '}';
-  }
+	public void setCumulateUser(Integer cumulateUser) {
+		this.cumulateUser = cumulateUser;
+	}
+
+	@Override
+	public String toString() {
+		return "WxMpUserCumulate{" + "refDate=" + refDate + ", cumulateUser=" + cumulateUser + '}';
+	}
 }
