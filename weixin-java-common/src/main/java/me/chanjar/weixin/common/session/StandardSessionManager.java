@@ -253,16 +253,16 @@ public class StandardSessionManager implements WxSessionManager, InternalSession
     InternalSession sessions[] = findSessions();
     int expireHere = 0 ;
 
-//    if(log.isDebugEnabled())
-//      log.debug("Start expire sessions {} at {} sessioncount {}", getName(), timeNow, sessions.length);
+    if(log.isDebugEnabled())
+      log.debug("Start expire sessions {} at {} sessioncount {}", getName(), timeNow, sessions.length);
     for (int i = 0; i < sessions.length; i++) {
       if (sessions[i]!=null && !sessions[i].isValid()) {
         expireHere++;
       }
     }
     long timeEnd = System.currentTimeMillis();
-//    if(log.isDebugEnabled())
-//      log.debug("End expire sessions {} processingTime {} expired sessions: {}", getName(), timeEnd - timeNow, expireHere);
+    if(log.isDebugEnabled())
+      log.debug("End expire sessions {} processingTime {} expired sessions: {}", getName(), timeEnd - timeNow, expireHere);
     processingTime += ( timeEnd - timeNow );
 
   }

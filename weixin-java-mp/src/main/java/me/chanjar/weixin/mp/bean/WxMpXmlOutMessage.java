@@ -1,143 +1,124 @@
 package me.chanjar.weixin.mp.bean;
 
-import java.io.Serializable;
-
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 import me.chanjar.weixin.common.util.xml.XStreamCDataConverter;
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
-import me.chanjar.weixin.mp.bean.outxmlbuilder.ImageBuilder;
-import me.chanjar.weixin.mp.bean.outxmlbuilder.MusicBuilder;
-import me.chanjar.weixin.mp.bean.outxmlbuilder.NewsBuilder;
-import me.chanjar.weixin.mp.bean.outxmlbuilder.TextBuilder;
-import me.chanjar.weixin.mp.bean.outxmlbuilder.VideoBuilder;
-import me.chanjar.weixin.mp.bean.outxmlbuilder.VoiceBuilder;
+import me.chanjar.weixin.mp.bean.outxmlbuilder.*;
 import me.chanjar.weixin.mp.util.crypto.WxMpCryptUtil;
 import me.chanjar.weixin.mp.util.xml.XStreamTransformer;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
+import java.io.Serializable;
 
 @XStreamAlias("xml")
 public abstract class WxMpXmlOutMessage implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+  @XStreamAlias("ToUserName")
+  @XStreamConverter(value=XStreamCDataConverter.class)
+  protected String toUserName;
+  
+  @XStreamAlias("FromUserName")
+  @XStreamConverter(value=XStreamCDataConverter.class)
+  protected String fromUserName;
+  
+  @XStreamAlias("CreateTime")
+  protected Long createTime;
+  
+  @XStreamAlias("MsgType")
+  @XStreamConverter(value=XStreamCDataConverter.class)
+  protected String msgType;
 
-	@XStreamAlias("ToUserName")
-	@XStreamConverter(value = XStreamCDataConverter.class)
-	protected String toUserName;
+  public String getToUserName() {
+    return toUserName;
+  }
 
-	@XStreamAlias("FromUserName")
-	@XStreamConverter(value = XStreamCDataConverter.class)
-	protected String fromUserName;
+  public void setToUserName(String toUserName) {
+    this.toUserName = toUserName;
+  }
 
-	@XStreamAlias("CreateTime")
-	protected Long createTime;
+  public String getFromUserName() {
+    return fromUserName;
+  }
 
-	@XStreamAlias("MsgType")
-	@XStreamConverter(value = XStreamCDataConverter.class)
-	protected String msgType;
+  public void setFromUserName(String fromUserName) {
+    this.fromUserName = fromUserName;
+  }
 
-	public String getToUserName() {
-		return toUserName;
-	}
+  public Long getCreateTime() {
+    return createTime;
+  }
 
-	public void setToUserName(String toUserName) {
-		this.toUserName = toUserName;
-	}
+  public void setCreateTime(Long createTime) {
+    this.createTime = createTime;
+  }
 
-	public String getFromUserName() {
-		return fromUserName;
-	}
+  public String getMsgType() {
+    return msgType;
+  }
 
-	public void setFromUserName(String fromUserName) {
-		this.fromUserName = fromUserName;
-	}
+  public void setMsgType(String msgType) {
+    this.msgType = msgType;
+  }
+  
+  public String toXml() {
+    return XStreamTransformer.toXml((Class) this.getClass(), this);
+  }
 
-	public Long getCreateTime() {
-		return createTime;
-	}
+  /**
+   * 转换成加密的xml格式
+   * @return
+   */
+  public String toEncryptedXml(WxMpConfigStorage wxMpConfigStorage) {
+    String plainXml = toXml();
+    WxMpCryptUtil pc = new WxMpCryptUtil(wxMpConfigStorage);
+    return pc.encrypt(plainXml);
+  }
 
-	public void setCreateTime(Long createTime) {
-		this.createTime = createTime;
-	}
+  /**
+   * 获得文本消息builder
+   * @return
+   */
+  public static TextBuilder TEXT() {
+    return new TextBuilder();
+  }
 
-	public String getMsgType() {
-		return msgType;
-	}
+  /**
+   * 获得图片消息builder
+   * @return
+   */
+  public static ImageBuilder IMAGE() {
+    return new ImageBuilder();
+  }
 
-	public void setMsgType(String msgType) {
-		this.msgType = msgType;
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public String toXml() {
-		return XStreamTransformer.toXml((Class) this.getClass(), this);
-	}
-
-	/**
-	 * 转换成加密的xml格式
-	 * 
-	 * @return
-	 */
-	public String toEncryptedXml(WxMpConfigStorage wxMpConfigStorage) {
-		String plainXml = toXml();
-		WxMpCryptUtil pc = new WxMpCryptUtil(wxMpConfigStorage);
-		return pc.encrypt(plainXml);
-	}
-
-	/**
-	 * 获得文本消息builder
-	 * 
-	 * @return
-	 */
-	public static TextBuilder TEXT() {
-		return new TextBuilder();
-	}
-
-	/**
-	 * 获得图片消息builder
-	 * 
-	 * @return
-	 */
-	public static ImageBuilder IMAGE() {
-		return new ImageBuilder();
-	}
-
-	/**
-	 * 获得语音消息builder
-	 * 
-	 * @return
-	 */
-	public static VoiceBuilder VOICE() {
-		return new VoiceBuilder();
-	}
-
-	/**
-	 * 获得视频消息builder
-	 * 
-	 * @return
-	 */
-	public static VideoBuilder VIDEO() {
-		return new VideoBuilder();
-	}
-
-	/**
-	 * 获得音乐消息builder
-	 * 
-	 * @return
-	 */
-	public static MusicBuilder MUSIC() {
-		return new MusicBuilder();
-	}
-
-	/**
-	 * 获得图文消息builder
-	 * 
-	 * @return
-	 */
-	public static NewsBuilder NEWS() {
-		return new NewsBuilder();
-	}
+  /**
+   * 获得语音消息builder
+   * @return
+   */
+  public static VoiceBuilder VOICE() {
+    return new VoiceBuilder();
+  }
+  
+  /**
+   * 获得视频消息builder
+   * @return
+   */
+  public static VideoBuilder VIDEO() {
+    return new VideoBuilder();
+  }
+  
+  /**
+   * 获得音乐消息builder
+   * @return
+   */
+  public static MusicBuilder MUSIC() {
+    return new MusicBuilder();
+  }
+  
+  /**
+   * 获得图文消息builder
+   * @return
+   */
+  public static NewsBuilder NEWS() {
+    return new NewsBuilder();
+  }
 }

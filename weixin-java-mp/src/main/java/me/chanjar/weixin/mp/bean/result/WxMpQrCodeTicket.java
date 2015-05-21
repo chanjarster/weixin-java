@@ -1,8 +1,8 @@
 package me.chanjar.weixin.mp.bean.result;
 
-import java.io.Serializable;
-
 import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
+
+import java.io.Serializable;
 
 /**
  * 换取二维码的Ticket
@@ -10,43 +10,39 @@ import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
  * @author chanjarster
  */
 public class WxMpQrCodeTicket implements Serializable {
+  
+  protected String ticket;
+  protected int expire_seconds = -1;
+  protected String url;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	protected String ticket;
-	protected int expire_seconds = -1;
-	protected String url;
+  public String getTicket() {
+    return ticket;
+  }
 
-	public String getTicket() {
-		return ticket;
-	}
+  public void setTicket(String ticket) {
+    this.ticket = ticket;
+  }
 
-	public void setTicket(String ticket) {
-		this.ticket = ticket;
-	}
+  /**
+   * 如果返回-1说明是永久
+   */
+  public int getExpire_seconds() {
+    return expire_seconds;
+  }
 
-	/**
-	 * 如果返回-1说明是永久
-	 */
-	public int getExpire_seconds() {
-		return expire_seconds;
-	}
+  public void setExpire_seconds(int expire_seconds) {
+    this.expire_seconds = expire_seconds;
+  }
 
-	public void setExpire_seconds(int expire_seconds) {
-		this.expire_seconds = expire_seconds;
-	}
+  public String getUrl() {
+    return url;
+  }
 
-	public String getUrl() {
-		return url;
-	}
+  public void setUrl(String url) {
+    this.url = url;
+  }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public static WxMpQrCodeTicket fromJson(String json) {
-		return WxMpGsonBuilder.INSTANCE.create().fromJson(json, WxMpQrCodeTicket.class);
-	}
+  public static WxMpQrCodeTicket fromJson(String json) {
+    return WxMpGsonBuilder.INSTANCE.create().fromJson(json, WxMpQrCodeTicket.class);
+  }
 }

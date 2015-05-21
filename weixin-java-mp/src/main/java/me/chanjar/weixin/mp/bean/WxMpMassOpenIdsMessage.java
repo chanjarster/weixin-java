@@ -1,10 +1,10 @@
 package me.chanjar.weixin.mp.bean;
 
+import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
 
 /**
  * OpenId列表群发的消息
@@ -12,76 +12,69 @@ import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
  * @author chanjarster
  */
 public class WxMpMassOpenIdsMessage implements Serializable {
+  
+  private List<String> toUsers = new ArrayList<String>();
+  private String msgType;
+  private String content;
+  private String mediaId;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private List<String> toUsers = new ArrayList<String>();
-	private String msgType;
-	private String content;
-	private String mediaId;
+  public WxMpMassOpenIdsMessage() {
+    super();
+  }
+  
+  public String getMsgType() {
+    return msgType;
+  }
 
-	public WxMpMassOpenIdsMessage() {
-		super();
-	}
+  /**
+   * <pre>
+   * 请使用
+   * {@link me.chanjar.weixin.common.api.WxConsts#MASS_MSG_IMAGE}
+   * {@link me.chanjar.weixin.common.api.WxConsts#MASS_MSG_NEWS}
+   * {@link me.chanjar.weixin.common.api.WxConsts#MASS_MSG_TEXT}
+   * {@link me.chanjar.weixin.common.api.WxConsts#MASS_MSG_VIDEO}
+   * {@link me.chanjar.weixin.common.api.WxConsts#MASS_MSG_VOICE}
+   * 如果msgtype和media_id不匹配的话，会返回系统繁忙的错误
+   * </pre>
+   * @param msgType
+   */
+  public void setMsgType(String msgType) {
+    this.msgType = msgType;
+  }
 
-	public String getMsgType() {
-		return msgType;
-	}
+  public String getContent() {
+    return content;
+  }
 
-	/**
-	 * <pre>
-	 * 请使用
-	 * {@link me.chanjar.weixin.common.api.WxConsts#MASS_MSG_IMAGE}
-	 * {@link me.chanjar.weixin.common.api.WxConsts#MASS_MSG_NEWS}
-	 * {@link me.chanjar.weixin.common.api.WxConsts#MASS_MSG_TEXT}
-	 * {@link me.chanjar.weixin.common.api.WxConsts#MASS_MSG_VIDEO}
-	 * {@link me.chanjar.weixin.common.api.WxConsts#MASS_MSG_VOICE}
-	 * 如果msgtype和media_id不匹配的话，会返回系统繁忙的错误
-	 * </pre>
-	 * 
-	 * @param msgType
-	 */
-	public void setMsgType(String msgType) {
-		this.msgType = msgType;
-	}
+  public void setContent(String content) {
+    this.content = content;
+  }
 
-	public String getContent() {
-		return content;
-	}
+  public String getMediaId() {
+    return mediaId;
+  }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+  public void setMediaId(String mediaId) {
+    this.mediaId = mediaId;
+  }
 
-	public String getMediaId() {
-		return mediaId;
-	}
+  public String toJson() {
+    return WxMpGsonBuilder.INSTANCE.create().toJson(this);
+  }
 
-	public void setMediaId(String mediaId) {
-		this.mediaId = mediaId;
-	}
+  /**
+   * OpenId列表，最多支持10,000个
+   * @return
+   */
+  public List<String> getToUsers() {
+    return toUsers;
+  }
 
-	public String toJson() {
-		return WxMpGsonBuilder.INSTANCE.create().toJson(this);
-	}
-
-	/**
-	 * OpenId列表，最多支持10,000个
-	 * 
-	 * @return
-	 */
-	public List<String> getToUsers() {
-		return toUsers;
-	}
-
-	/**
-	 * 添加OpenId，最多支持10,000个
-	 * 
-	 * @param openId
-	 */
-	public void addUser(String openId) {
-		this.toUsers.add(openId);
-	}
+  /**
+   * 添加OpenId，最多支持10,000个
+   * @param openId
+   */
+  public void addUser(String openId) {
+    this.toUsers.add(openId);
+  }
 }
