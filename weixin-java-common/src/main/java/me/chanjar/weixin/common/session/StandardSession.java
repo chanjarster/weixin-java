@@ -180,10 +180,11 @@ public class StandardSession implements WxSession, InternalSession {
     if (this.expiring) {
       return true;
     }
-
-    if (accessCount.get() > 0) {
-      return true;
-    }
+    // accessCount 只增加，没有减的入口，从而导致session无法清理
+//
+//    if (accessCount.get() > 0) {
+//      return true;
+//    }
 
     if (maxInactiveInterval > 0) {
       long timeNow = System.currentTimeMillis();
