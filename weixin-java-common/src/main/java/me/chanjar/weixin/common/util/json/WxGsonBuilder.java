@@ -20,7 +20,7 @@ public class WxGsonBuilder {
   }
 
   public static Gson create() {
-    return INSTANCE.create();
+    return INSTANCE.setPrettyPrinting().create();
   }
 
 }
