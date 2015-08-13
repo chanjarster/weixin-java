@@ -17,7 +17,7 @@ weixin-java-tools
 <dependency>
   <groupId>me.chanjar</groupId>
   <artifactId>weixin-java-mp</artifactId>
-  <version>1.1.8</version>
+  <version>1.2.0</version>
 </dependency>
 ```
 
@@ -27,7 +27,7 @@ weixin-java-tools
 <dependency>
   <groupId>me.chanjar</groupId>
   <artifactId>weixin-java-cp</artifactId>
-  <version>1.1.8</version>
+  <version>1.2.0</version>
 </dependency>
 ```
 
@@ -50,3 +50,7 @@ weixin-java-tools
 * [1.0.3升级指南](https://github.com/chanjarster/weixin-java-tools/wiki/1_0_3升级指南)
 * [1.1.0升级指南](https://github.com/chanjarster/weixin-java-tools/wiki/1_1_0升级指南)
 * [1.1.1升级指南](https://github.com/chanjarster/weixin-java-tools/wiki/1_1_1升级指南)
+
+## 关于Pull Request
+
+非常欢迎和感谢对本项目发起Pull Request的同学，不过本项目基于[git flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)开发流程，因此在发起Pull Request的时候请选择develop分支。
