@@ -27,6 +27,8 @@ import me.chanjar.weixin.mp.bean.*;
 import me.chanjar.weixin.mp.bean.result.*;
 import me.chanjar.weixin.mp.util.http.*;
 import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
+
+import org.apache.commons.io.Charsets;
 import org.apache.http.Consts;
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
@@ -46,6 +48,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.Map.Entry;
@@ -470,6 +475,19 @@ public class WxMpServiceImpl implements WxMpService {
   public File qrCodePicture(WxMpQrCodeTicket ticket) throws WxErrorException {
     String url = "https://mp.weixin.qq.com/cgi-bin/showqrcode";
     return execute(new QrCodeRequestExecutor(), url, ticket);
+  }
+
+  @Override
+  public String qrCodePictureUrl(String ticket) throws WxErrorException {
+    String url = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=%s";
+    try {
+      return String.format(url, URLEncoder.encode(ticket, Charsets.UTF_8.name()));
+    } catch (UnsupportedEncodingException e) {
+      WxError error = new WxError();
+      error.setErrorCode(-1);
+      error.setErrorMsg(e.getMessage());
+      throw new WxErrorException(error);
+    }
   }
 
   public String shortUrl(String long_url) throws WxErrorException {
@@ -1239,6 +1257,19 @@ public class WxMpServiceImpl implements WxMpService {
     }
     
     return responseContent;
+  }
+
+  @Override
+  public WxMpMassSendResult massMessagePreview(WxMpMassPreviewMessage wxMpMassPreviewMessage) throws Exception {
+    String url = "https://api.weixin.qq.com/cgi-bin/message/mass/preview";
+    String responseContent = execute(new SimplePostRequestExecutor(), url, wxMpMassPreviewMessage.toJson());
+    return WxMpMassSendResult.fromJson(responseContent);
+  }
+
+  @Override
+  public WxMediaImgUploadResult mediaImgUpload(File file) throws WxErrorException {
+    String url = "https://api.weixin.qq.com/cgi-bin/media/uploadimg";
+    return execute(new MediaImgUploadRequestExecutor(), url, file);
   }
 
 }
