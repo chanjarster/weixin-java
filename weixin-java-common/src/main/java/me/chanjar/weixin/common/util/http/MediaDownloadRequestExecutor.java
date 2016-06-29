@@ -4,6 +4,7 @@ import me.chanjar.weixin.common.bean.result.WxError;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.util.StringUtils;
 import me.chanjar.weixin.common.util.fs.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
@@ -52,9 +53,9 @@ public class MediaDownloadRequestExecutor implements RequestExecutor<File, Strin
       RequestConfig config = RequestConfig.custom().setProxy(httpProxy).build();
       httpGet.setConfig(config);
     }
-
-    try (CloseableHttpResponse response = httpclient.execute(httpGet)) {
-
+    CloseableHttpResponse response = null;
+    try{
+      response = httpclient.execute(httpGet);
       Header[] contentTypeHeader = response.getHeaders("Content-Type");
       if (contentTypeHeader != null && contentTypeHeader.length > 0) {
         // 下载媒体文件出错
@@ -75,6 +76,7 @@ public class MediaDownloadRequestExecutor implements RequestExecutor<File, Strin
       return localFile;
 
     }finally {
+      IOUtils.closeQuietly(response);
       httpGet.releaseConnection();
     }
 

@@ -27,8 +27,8 @@ import me.chanjar.weixin.mp.bean.*;
 import me.chanjar.weixin.mp.bean.result.*;
 import me.chanjar.weixin.mp.util.http.*;
 import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
-
 import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.Consts;
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
@@ -44,13 +44,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.Map.Entry;
@@ -114,7 +109,9 @@ public class WxMpServiceImpl implements WxMpService {
               RequestConfig config = RequestConfig.custom().setProxy(httpProxy).build();
               httpGet.setConfig(config);
             }
-            try (CloseableHttpResponse response = getHttpclient().execute(httpGet)) {
+            CloseableHttpResponse response = null;
+            try {
+              response = getHttpclient().execute(httpGet);
               String resultContent = new BasicResponseHandler().handleResponse(response);
               WxError error = WxError.fromJson(resultContent);
               if (error.getErrorCode() != 0) {
@@ -123,6 +120,7 @@ public class WxMpServiceImpl implements WxMpService {
               WxAccessToken accessToken = WxAccessToken.fromJson(resultContent);
               wxMpConfigStorage.updateAccessToken(accessToken.getAccessToken(), accessToken.getExpiresIn());
             }finally {
+              IOUtils.closeQuietly(response);
               httpGet.releaseConnection();
             }
           } catch (ClientProtocolException e) {
@@ -308,7 +306,7 @@ public class WxMpServiceImpl implements WxMpService {
 
   public WxMpMaterialNewsBatchGetResult materialNewsBatchGet(int offset, int count) throws WxErrorException {
     String url = "https://api.weixin.qq.com/cgi-bin/material/batchget_material";
-    Map<String, Object> params = new HashMap<>();
+    Map<String, Object> params = new HashMap<String, Object>();
     params.put("type", WxConsts.MATERIAL_NEWS);
     params.put("offset", offset);
     params.put("count", count);
@@ -323,7 +321,7 @@ public class WxMpServiceImpl implements WxMpService {
 
   public WxMpMaterialFileBatchGetResult materialFileBatchGet(String type, int offset, int count) throws WxErrorException {
     String url = "https://api.weixin.qq.com/cgi-bin/material/batchget_material";
-    Map<String, Object> params = new HashMap<>();
+    Map<String, Object> params = new HashMap<String, Object>();
     params.put("type", type);
     params.put("offset", offset);
     params.put("count", count);
@@ -812,7 +810,9 @@ public class WxMpServiceImpl implements WxMpService {
 
     StringEntity entity = new StringEntity(request.toString(), Consts.UTF_8);
     httpPost.setEntity(entity);
-    try(CloseableHttpResponse response = getHttpclient().execute(httpPost)) {
+    CloseableHttpResponse response = null;
+    try {
+      response = getHttpclient().execute(httpPost);
       String responseContent = Utf8ResponseHandler.INSTANCE.handleResponse(response);
       XStream xstream = XStreamInitializer.getInstance();
       xstream.alias("xml", WxMpPrepayIdResult.class);
@@ -821,6 +821,11 @@ public class WxMpServiceImpl implements WxMpService {
     } catch (IOException e) {
       throw new RuntimeException("Failed to get prepay id due to IO exception.", e);
     }finally {
+      try {
+        if (response != null) response.close();
+      } catch (IOException ioe) {
+        ioe.printStackTrace();
+      }
       httpPost.releaseConnection();
     }
   }
@@ -921,7 +926,9 @@ public class WxMpServiceImpl implements WxMpService {
 
     StringEntity entity = new StringEntity(request.toString(), Consts.UTF_8);
     httpPost.setEntity(entity);
-    try(CloseableHttpResponse response = httpClient.execute(httpPost)) {
+    CloseableHttpResponse response = null;
+    try {
+      response = httpClient.execute(httpPost);
       String responseContent = Utf8ResponseHandler.INSTANCE.handleResponse(response);
       XStream xstream = XStreamInitializer.getInstance();
       xstream.alias("xml", WxMpPayResult.class);
@@ -929,6 +936,8 @@ public class WxMpServiceImpl implements WxMpService {
       return wxMpPayResult;
     } catch (IOException e) {
       throw new RuntimeException("Failed to query order due to IO exception.", e);
+    } finally {
+      IOUtils.closeQuietly(response);
     }
   }
 
@@ -969,8 +978,9 @@ public class WxMpServiceImpl implements WxMpService {
     
     StringEntity entity = new StringEntity(request.toString(), Consts.UTF_8);
     httpPost.setEntity(entity);
-    try(
-      CloseableHttpResponse response = getHttpclient().execute(httpPost)) {
+    CloseableHttpResponse response = null;
+    try {
+      response = getHttpclient().execute(httpPost);
       String responseContent = Utf8ResponseHandler.INSTANCE.handleResponse(response);
       XStream xstream = XStreamInitializer.getInstance();
       xstream.processAnnotations(WxMpPayRefundResult.class);
@@ -996,6 +1006,7 @@ public class WxMpServiceImpl implements WxMpService {
       error.setErrorMsg("incorrect response.");
       throw new WxErrorException(error);
     }finally {
+      IOUtils.closeQuietly(response);
       httpPost.releaseConnection();
     }
   }
@@ -1031,7 +1042,9 @@ public class WxMpServiceImpl implements WxMpService {
 
     StringEntity entity = new StringEntity(request.toString(), Consts.UTF_8);
     httpPost.setEntity(entity);
-    try(CloseableHttpResponse response = getHttpclient().execute(httpPost)) {
+    CloseableHttpResponse response = null;
+    try {
+      response = getHttpclient().execute(httpPost);
       String responseContent = Utf8ResponseHandler.INSTANCE.handleResponse(response);
       XStream xstream = XStreamInitializer.getInstance();
       xstream.processAnnotations(WxRedpackResult.class);
@@ -1043,6 +1056,7 @@ public class WxMpServiceImpl implements WxMpService {
       error.setErrorCode(-1);
       throw new WxErrorException(error);
     }finally {
+      IOUtils.closeQuietly(response);
       httpPost.releaseConnection();
     }
   }

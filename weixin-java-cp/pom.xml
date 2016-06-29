@@ -4,7 +4,7 @@
         xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.github.binarywang</groupId>
+        <groupId>com.github.terryl</groupId>
         <artifactId>weixin-java-parent</artifactId>
         <version>1.3.4</version>
     </parent>
@@ -15,7 +15,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.binarywang</groupId>
+            <groupId>com.github.terryl</groupId>
             <artifactId>weixin-java-common</artifactId>
             <version>${project.version}</version>
         </dependency>

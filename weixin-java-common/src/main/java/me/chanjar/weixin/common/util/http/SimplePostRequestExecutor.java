@@ -2,6 +2,7 @@ package me.chanjar.weixin.common.util.http;
 
 import me.chanjar.weixin.common.bean.result.WxError;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.Consts;
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
@@ -33,7 +34,9 @@ public class SimplePostRequestExecutor implements RequestExecutor<String, String
       httpPost.setEntity(entity);
     }
 
-    try (CloseableHttpResponse response = httpclient.execute(httpPost)) {
+    CloseableHttpResponse response = null;
+    try{
+      response = httpclient.execute(httpPost);
       String responseContent = Utf8ResponseHandler.INSTANCE.handleResponse(response);
       WxError error = WxError.fromJson(responseContent);
       if (error.getErrorCode() != 0) {
@@ -41,6 +44,7 @@ public class SimplePostRequestExecutor implements RequestExecutor<String, String
       }
       return responseContent;
     }finally {
+      IOUtils.closeQuietly(response);
       httpPost.releaseConnection();
     }
   }

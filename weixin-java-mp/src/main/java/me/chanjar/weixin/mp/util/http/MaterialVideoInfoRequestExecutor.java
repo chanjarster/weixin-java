@@ -6,6 +6,7 @@ import me.chanjar.weixin.common.util.http.RequestExecutor;
 import me.chanjar.weixin.common.util.http.Utf8ResponseHandler;
 import me.chanjar.weixin.common.util.json.WxGsonBuilder;
 import me.chanjar.weixin.mp.bean.result.WxMpMaterialVideoInfoResult;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
@@ -31,10 +32,12 @@ public class MaterialVideoInfoRequestExecutor implements RequestExecutor<WxMpMat
       httpPost.setConfig(config);
     }
 
-    Map<String, String> params = new HashMap<>();
+    Map<String, String> params = new HashMap<String, String>();
     params.put("media_id", materialId);
     httpPost.setEntity(new StringEntity(WxGsonBuilder.create().toJson(params)));
-    try(CloseableHttpResponse response = httpclient.execute(httpPost)){
+    CloseableHttpResponse response = null;
+    try{
+      response = httpclient.execute(httpPost);
       String responseContent = Utf8ResponseHandler.INSTANCE.handleResponse(response);
       WxError error = WxError.fromJson(responseContent);
       if (error.getErrorCode() != 0) {
@@ -43,6 +46,7 @@ public class MaterialVideoInfoRequestExecutor implements RequestExecutor<WxMpMat
         return WxMpMaterialVideoInfoResult.fromJson(responseContent);
       }
     }finally {
+      IOUtils.closeQuietly(response);
       httpPost.releaseConnection();
     }
   }

@@ -27,6 +27,7 @@ import me.chanjar.weixin.cp.bean.WxCpMessage;
 import me.chanjar.weixin.cp.bean.WxCpTag;
 import me.chanjar.weixin.cp.bean.WxCpUser;
 import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
@@ -111,9 +112,12 @@ public class WxCpServiceImpl implements WxCpService {
             }
             CloseableHttpClient httpclient = getHttpclient();
             String resultContent = null;
-            try (CloseableHttpResponse response = httpclient.execute(httpGet)) {
+            CloseableHttpResponse response = null;
+            try{
+              response = httpclient.execute(httpGet);
               resultContent = new BasicResponseHandler().handleResponse(response);
             }finally {
+              IOUtils.closeQuietly(response);
               httpGet.releaseConnection();
             }
             WxError error = WxError.fromJson(resultContent);
