@@ -41,25 +41,31 @@ public class MaterialVoiceAndImageDownloadRequestExecutor implements RequestExec
       httpPost.setConfig(config);
     }
 
-    Map<String, String> params = new HashMap<>();
+    Map<String, String> params = new HashMap<String, String>();
     params.put("media_id", materialId);
     httpPost.setEntity(new StringEntity(WxGsonBuilder.create().toJson(params)));
-    CloseableHttpResponse response = httpclient.execute(httpPost);
-    // 下载媒体文件出错
-    InputStream inputStream = InputStreamResponseHandler.INSTANCE.handleResponse(response);
-    byte[] responseContent = IOUtils.toByteArray(inputStream);
-    String responseContentString = new String(responseContent, "UTF-8");
-    if (responseContentString.length() < 100) {
-      try {
-        WxError wxError = WxGsonBuilder.create().fromJson(responseContentString, WxError.class);
-        if (wxError.getErrorCode() != 0) {
-          throw new WxErrorException(wxError);
+    CloseableHttpResponse response = null;
+    try{
+      response = httpclient.execute(httpPost);
+      // 下载媒体文件出错
+      InputStream inputStream = InputStreamResponseHandler.INSTANCE.handleResponse(response);
+      byte[] responseContent = IOUtils.toByteArray(inputStream);
+      String responseContentString = new String(responseContent, "UTF-8");
+      if (responseContentString.length() < 100) {
+        try {
+          WxError wxError = WxGsonBuilder.create().fromJson(responseContentString, WxError.class);
+          if (wxError.getErrorCode() != 0) {
+            throw new WxErrorException(wxError);
+          }
+        } catch (com.google.gson.JsonSyntaxException ex) {
+          return new ByteArrayInputStream(responseContent);
         }
-      } catch (com.google.gson.JsonSyntaxException ex) {
-        return new ByteArrayInputStream(responseContent);
       }
+      return new ByteArrayInputStream(responseContent);
+    }finally {
+      IOUtils.closeQuietly(response);
+      httpPost.releaseConnection();
     }
-    return new ByteArrayInputStream(responseContent);
   }
 
 }

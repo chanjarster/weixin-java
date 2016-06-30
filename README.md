@@ -1,19 +1,21 @@
-weixin-java-tools
+# Weixin Java Tools 微信公众号/企业号开发Java SDK
+## [![Build Status](https://travis-ci.org/binarywang/weixin-java-tools.svg?branch=develop)](https://travis-ci.org/binarywang/weixin-java-tools) ![Maven Central](https://img.shields.io/maven-central/v/com.github.binarywang/weixin-java-parent.svg) <a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=078f7a153d243853e24cf2b542e7a6ccbf2a592bc138080f84d11297f736ec46"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="weixin-java-tools" title="weixin-java-tools"></a>
 
-[![Build Status](https://travis-ci.org/chanjarster/weixin-java-tools.svg?branch=develop)](https://travis-ci.org/chanjarster/weixin-java-tools)
-![Maven Central](https://img.shields.io/maven-central/v/me.chanjar/weixin-java-parent.svg)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/chanjarster/weixin-java-tools?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+### 声明：本项目基于chanjarster/weixin-java-tools，由于原作者长期没有维护，故单独维护和发布，且发布到maven上的groupId也会不同。
+#### 最新更新：1.3.4版发布！！！ on 2016-06-01
 
-===========
-
-* 群/聊天室：请点击上方的GITTER按钮
-* 本项目的发布周期：本人子2015年6月开始进入到了一个非常忙碌的状态，且公司目前也没有开发微信相关的项目，因此本项目的维护基本靠“等”。所以靠人不如靠自己，提交pull request吧。
+### 详细开发文档请看 [wiki](https://github.com/chanjarster/weixin-java-tools/wiki)。
 
 ===========
+## 使用开发交流工具：
+* QQ群：343954419 <a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=078f7a153d243853e24cf2b542e7a6ccbf2a592bc138080f84d11297f736ec46"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="weixin-java-tools" title="weixin-java-tools"></a>
+* 微信群：
+ ![Alt text](https://raw.githubusercontent.com/binarywang/weixin-java-tools/master/weixinqun.jpg  "微信群")
+ 
+===========
 
-微信公众号、企业号Java SDK。
-
-详细文档请看 [wiki](https://github.com/chanjarster/weixin-java-tools/wiki)。
+## 发布周期
+暂定为每月发布一次，月初或月底发布新版本，遇到重大问题需修复会及时提交新版本，欢迎大家随时提交Pull Request。
 
 ## Quick Start
 
@@ -21,9 +23,9 @@ weixin-java-tools
 
 ```xml
 <dependency>
-  <groupId>me.chanjar</groupId>
+  <groupId>com.github.binarywang</groupId>
   <artifactId>weixin-java-mp</artifactId>
-  <version>1.3.3</version>
+  <version>1.3.4</version>
 </dependency>
 ```
 
@@ -31,9 +33,9 @@ weixin-java-tools
 
 ```xml
 <dependency>
-  <groupId>me.chanjar</groupId>
+  <groupId>com.github.binarywang</groupId>
   <artifactId>weixin-java-cp</artifactId>
-  <version>1.3.3</version>
+  <version>1.3.4</version>
 </dependency>
 ```
 
@@ -50,12 +52,6 @@ weixin-java-tools
   </repository>
 </repositories>
 ```
-
-## 升级指南
-
-* [1.0.3升级指南](https://github.com/chanjarster/weixin-java-tools/wiki/1_0_3升级指南)
-* [1.1.0升级指南](https://github.com/chanjarster/weixin-java-tools/wiki/1_1_0升级指南)
-* [1.1.1升级指南](https://github.com/chanjarster/weixin-java-tools/wiki/1_1_1升级指南)
 
 ## 关于Pull Request
 

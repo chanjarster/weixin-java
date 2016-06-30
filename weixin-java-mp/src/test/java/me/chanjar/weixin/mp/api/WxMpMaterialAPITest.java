@@ -31,7 +31,7 @@ public class WxMpMaterialAPITest {
   @Inject
   protected WxMpServiceImpl wxService;
 
-  private Map<String, Map<String, Object>> media_ids = new LinkedHashMap<>();
+  private Map<String, Map<String, Object>> media_ids = new LinkedHashMap<String, Map<String, Object>>();
   // 缩略图的id，测试上传图文使用
   private String thumbMediaId = "";
   // 单图文消息media_id
@@ -64,7 +64,7 @@ public class WxMpMaterialAPITest {
       thumbMediaId = res.getMediaId();
     }
 
-    Map<String, Object> materialInfo = new HashMap<>();
+    Map<String, Object> materialInfo = new HashMap<String, Object>();
     materialInfo.put("media_id", res.getMediaId());
     materialInfo.put("length", tempFile.length());
     materialInfo.put("filename", tempFile.getName());
@@ -226,7 +226,7 @@ public class WxMpMaterialAPITest {
 
   @DataProvider
   public Iterator<Object[]> allTestMaterial() {
-    List<Object[]> params = new ArrayList<>();
+    List<Object[]> params = new ArrayList<Object[]>();
     for (String mediaId : this.media_ids.keySet()) {
       params.add(new Object[]{mediaId});
     }
