@@ -31,22 +31,25 @@ public class MaterialUploadRequestExecutor implements RequestExecutor<WxMpMateri
       httpPost.setConfig(response);
     }
 
-    if (material != null) {
-      File file = material.getFile();
-      if (file == null || !file.exists()) {
-        throw new FileNotFoundException();
-      }
-      MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
-      multipartEntityBuilder
-          .addBinaryBody("media", file)
-          .setMode(HttpMultipartMode.RFC6532);
-      Map<String, String> form = material.getForm();
-      if (material.getForm() != null) {
-        multipartEntityBuilder.addTextBody("description", WxGsonBuilder.create().toJson(form));
-      }
+    if (material == null) {
+      throw new WxErrorException(WxError.newBuilder().setErrorMsg("非法请求，material参数为空").build());
+    }
+
+    File file = material.getFile();
+    if (file == null || !file.exists()) {
+      throw new FileNotFoundException();
+    }
+    
+    MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
+    multipartEntityBuilder
+        .addBinaryBody("media", file)
+        .setMode(HttpMultipartMode.RFC6532);
+    Map<String, String> form = material.getForm();
+    if (material.getForm() != null) {
+      multipartEntityBuilder.addTextBody("description", WxGsonBuilder.create().toJson(form));
+    }
       httpPost.setEntity(multipartEntityBuilder.build());
       httpPost.setHeader("Content-Type", ContentType.MULTIPART_FORM_DATA.toString());
-    }
     CloseableHttpResponse response = null;
     try {
       response = httpclient.execute(httpPost);

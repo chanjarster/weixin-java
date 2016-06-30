@@ -1,6 +1,7 @@
 package me.chanjar.weixin.common.util.http;
 
 import me.chanjar.weixin.common.util.StringUtils;
+import org.apache.http.HttpHost;
 import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -131,7 +132,9 @@ public class DefaultApacheHttpHttpClientBuilder implements ApacheHttpClientBuild
           .build()
       )
       .setRetryHandler(httpRequestRetryHandler);
-
+    if (StringUtils.isNotBlank(httpProxyHost)) {
+      httpClientBuilder.setProxy(new HttpHost(httpProxyHost, httpProxyPort));
+    }
     if (StringUtils.isNotBlank(httpProxyHost) && StringUtils.isNotBlank(httpProxyUsername)) {
       // 使用代理服务器 需要用户认证的代理服务器
       CredentialsProvider credsProvider = new BasicCredentialsProvider();
