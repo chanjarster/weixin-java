@@ -41,7 +41,16 @@ public class WxMpPayResult implements Serializable {
   private String out_trade_no;
   private String attach;
   private String time_end;
-
+ /**
+  *  现金支付金额	cash_fee	是	Int	100	现金支付金额订单现金支付金额，详见支付金额
+  */
+  private String cash_fee;
+  
+  /**
+   * 现金支付货币类型	cash_fee_type	否
+   * 
+   */
+  private String cash_fee_type;
   public String getReturn_code() {
     return return_code;
   }
@@ -254,4 +263,32 @@ public class WxMpPayResult implements Serializable {
         ", time_end='" + time_end + '\'' +
         '}';
   }
+
+/**
+ * @return the cash_fee
+ */
+public String getCash_fee() {
+	return cash_fee;
+}
+
+/**
+ * @param cash_fee the cash_fee to set
+ */
+public void setCash_fee(String cash_fee) {
+	this.cash_fee = cash_fee;
+}
+
+/**
+ * @return the cash_fee_type
+ */
+public String getCash_fee_type() {
+	return cash_fee_type;
+}
+
+/**
+ * @param cash_fee_type the cash_fee_type to set
+ */
+public void setCash_fee_type(String cash_fee_type) {
+	this.cash_fee_type = cash_fee_type;
+}
 }
