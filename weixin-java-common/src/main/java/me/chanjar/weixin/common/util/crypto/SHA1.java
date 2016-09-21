@@ -2,7 +2,6 @@ package me.chanjar.weixin.common.util.crypto;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
@@ -13,9 +12,6 @@ public class SHA1 {
 
   /**
    * 串接arr参数，生成sha1 digest
-   *
-   * @param arr
-   * @return
    */
   public static String gen(String... arr) throws NoSuchAlgorithmException {
     Arrays.sort(arr);
@@ -28,9 +24,6 @@ public class SHA1 {
 
   /**
    * 用&串接arr参数，生成sha1 digest
-   *
-   * @param arr
-   * @return
    */
   public static String genWithAmple(String... arr) throws NoSuchAlgorithmException {
     Arrays.sort(arr);
@@ -44,4 +37,4 @@ public class SHA1 {
     }
     return DigestUtils.sha1Hex(sb.toString());
   }
- }
+}

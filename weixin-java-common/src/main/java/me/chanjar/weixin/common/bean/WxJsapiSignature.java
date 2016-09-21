@@ -6,8 +6,10 @@ import java.io.Serializable;
  * jspai signature
  */
 public class WxJsapiSignature implements Serializable {
+  private static final long serialVersionUID = -1116808193154384804L;
+
   private String appid;
-  
+
   private String noncestr;
 
   private long timestamp;
@@ -49,11 +51,11 @@ public class WxJsapiSignature implements Serializable {
   }
 
   public String getAppid() {
-	  return appid;
+    return appid;
   }
 
   public void setAppid(String appid) {
-	  this.appid = appid;
+    this.appid = appid;
   }
 
 }

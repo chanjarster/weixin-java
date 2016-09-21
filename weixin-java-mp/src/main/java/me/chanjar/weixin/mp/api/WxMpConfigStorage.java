@@ -13,89 +13,89 @@ import java.io.File;
  */
 public interface WxMpConfigStorage {
 
-  public String getAccessToken();
+  String getAccessToken();
 
-  public boolean isAccessTokenExpired();
+  boolean isAccessTokenExpired();
 
   /**
    * 强制将access token过期掉
    */
-  public void expireAccessToken();
+  void expireAccessToken();
 
   /**
    * 应该是线程安全的
    * @param accessToken
    */
-  public void updateAccessToken(WxAccessToken accessToken);
+  void updateAccessToken(WxAccessToken accessToken);
 
   /**
    * 应该是线程安全的
    * @param accessToken
    * @param expiresIn
    */
-  public void updateAccessToken(String accessToken, int expiresIn);
+  void updateAccessToken(String accessToken, int expiresIn);
 
-  public String getJsapiTicket();
+  String getJsapiTicket();
 
-  public boolean isJsapiTicketExpired();
+  boolean isJsapiTicketExpired();
 
   /**
    * 强制将jsapi ticket过期掉
    */
-  public void expireJsapiTicket();
+  void expireJsapiTicket();
 
   /**
    * 应该是线程安全的
    * @param jsapiTicket
    */
-  public void updateJsapiTicket(String jsapiTicket, int expiresInSeconds);
+  void updateJsapiTicket(String jsapiTicket, int expiresInSeconds);
 
-  public String getCardApiTicket();
+  String getCardApiTicket();
 
-  public boolean isCardApiTicketExpired();
+  boolean isCardApiTicketExpired();
 
   /**
    * 强制将卡券api ticket过期掉
    */
-  public void expireCardApiTicket();
+  void expireCardApiTicket();
 
   /**
    * 应该是线程安全的
    * @param cardApiTicket
    */
-  public void updateCardApiTicket(String cardApiTicket, int expiresInSeconds);
+  void updateCardApiTicket(String cardApiTicket, int expiresInSeconds);
 
-  public String getAppId();
+  String getAppId();
 
-  public String getSecret();
+  String getSecret();
 
-    public String getPartnerId();
-
-    public String getPartnerKey();
-
-  public String getToken();
-
-  public String getAesKey();
-
-  public long getExpiresTime();
-
-  public String getOauth2redirectUri();
-
-  public String getHttp_proxy_host();
-
-  public int getHttp_proxy_port();
-
-  public String getHttp_proxy_username();
-
-  public String getHttp_proxy_password();
+  String getPartnerId();
   
-  public File getTmpDirFile();
+  String getPartnerKey();
 
-  public SSLContext getSSLContext();
+  String getToken();
+
+  String getAesKey();
+
+  long getExpiresTime();
+
+  String getOauth2redirectUri();
+
+  String getHttpProxyHost();
+
+  int getHttpProxyPort();
+
+  String getHttpProxyUsername();
+
+  String getHttpProxyPassword();
+  
+  File getTmpDirFile();
+
+  SSLContext getSSLContext();
 
   /**
    * http client builder
    * @return ApacheHttpClientBuilder
    */
-  public ApacheHttpClientBuilder getApacheHttpClientBuilder();
+  ApacheHttpClientBuilder getApacheHttpClientBuilder();
 }

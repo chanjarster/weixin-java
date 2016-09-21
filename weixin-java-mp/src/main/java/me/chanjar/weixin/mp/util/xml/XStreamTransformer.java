@@ -14,10 +14,6 @@ public class XStreamTransformer {
 
   /**
    * xml -> pojo
-   *
-   * @param clazz
-   * @param xml
-   * @return
    */
   @SuppressWarnings("unchecked")
   public static <T> T fromXml(Class<T> clazz, String xml) {
@@ -43,17 +39,13 @@ public class XStreamTransformer {
 
   /**
    * pojo -> xml
-   *
-   * @param clazz
-   * @param object
-   * @return
    */
   public static <T> String toXml(Class<T> clazz, T object) {
     return CLASS_2_XSTREAM_INSTANCE.get(clazz).toXML(object);
   }
 
   private static Map<Class, XStream> configXStreamInstance() {
-    Map<Class, XStream> map = new HashMap<Class, XStream>();
+    Map<Class, XStream> map = new HashMap<>();
     map.put(WxMpXmlMessage.class, config_WxMpXmlMessage());
     map.put(WxMpXmlOutMusicMessage.class, config_WxMpXmlOutMusicMessage());
     map.put(WxMpXmlOutNewsMessage.class, config_WxMpXmlOutNewsMessage());
