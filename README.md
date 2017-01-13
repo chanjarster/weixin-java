@@ -15,6 +15,8 @@ weixin-java-tools
 
 ===========
 
+[![Join the chat at https://gitter.im/chanjarster/weixin-java-tools](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/chanjarster/weixin-java-tools?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 微信公众号、企业号Java SDK。
 
 详细文档请看 [wiki](https://github.com/chanjarster/weixin-java-tools/wiki)。
