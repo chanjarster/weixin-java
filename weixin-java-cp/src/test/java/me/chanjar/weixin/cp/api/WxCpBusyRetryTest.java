@@ -1,25 +1,28 @@
 package me.chanjar.weixin.cp.api;
 
-import me.chanjar.weixin.common.bean.result.WxError;
-import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.common.util.http.RequestExecutor;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import me.chanjar.weixin.common.bean.result.WxError;
+import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.common.util.http.RequestExecutor;
+
 @Test
 public class WxCpBusyRetryTest {
 
-  @DataProvider(name="getService")
+  @DataProvider(name = "getService")
   public Object[][] getService() {
     WxCpService service = new WxCpServiceImpl() {
 
       @Override
-      protected <T, E> T executeInternal(RequestExecutor<T, E> executor, String uri, E data) throws WxErrorException {
+      protected synchronized <T, E> T executeInternal(
+          RequestExecutor<T, E> executor, String uri, E data)
+          throws WxErrorException {
         WxError error = new WxError();
         error.setErrorCode(-1);
         throw new WxErrorException(error);
@@ -28,8 +31,8 @@ public class WxCpBusyRetryTest {
 
     service.setMaxRetryTimes(3);
     service.setRetrySleepMillis(500);
-    return new Object[][] {
-        new Object[] { service }
+    return new Object[][]{
+            new Object[]{service}
     };
   }
 

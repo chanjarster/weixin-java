@@ -1,10 +1,13 @@
 package me.chanjar.weixin.mp.api;
 
 import me.chanjar.weixin.common.bean.WxAccessToken;
+import me.chanjar.weixin.common.util.ToStringUtils;
 import me.chanjar.weixin.common.util.http.ApacheHttpClientBuilder;
 
 import javax.net.ssl.SSLContext;
 import java.io.File;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 基于内存的微信配置provider，在实际生产环境中应该将这些配置持久化
@@ -24,10 +27,10 @@ public class WxMpInMemoryConfigStorage implements WxMpConfigStorage {
 
   protected volatile String oauth2redirectUri;
 
-  protected volatile String http_proxy_host;
-  protected volatile int http_proxy_port;
-  protected volatile String http_proxy_username;
-  protected volatile String http_proxy_password;
+  protected volatile String httpProxyHost;
+  protected volatile int httpProxyPort;
+  protected volatile String httpProxyUsername;
+  protected volatile String httpProxyPassword;
 
   protected volatile String jsapiTicket;
   protected volatile long jsapiTicketExpiresTime;
@@ -35,38 +38,58 @@ public class WxMpInMemoryConfigStorage implements WxMpConfigStorage {
   protected volatile String cardApiTicket;
   protected volatile long cardApiTicketExpiresTime;
 
+  protected Lock accessTokenLock = new ReentrantLock();
+  protected Lock jsapiTicketLock = new ReentrantLock();
+  protected Lock cardApiTicketLock = new ReentrantLock();
+
   /**
    * 临时文件目录
    */
   protected volatile File tmpDirFile;
-  
+
   protected volatile SSLContext sslContext;
 
   protected volatile ApacheHttpClientBuilder apacheHttpClientBuilder;
 
+  @Override
   public String getAccessToken() {
     return this.accessToken;
   }
 
+  @Override
+  public Lock getAccessTokenLock() {
+    return this.accessTokenLock;
+  }
+
+  @Override
   public boolean isAccessTokenExpired() {
     return System.currentTimeMillis() > this.expiresTime;
   }
 
+  @Override
   public synchronized void updateAccessToken(WxAccessToken accessToken) {
     updateAccessToken(accessToken.getAccessToken(), accessToken.getExpiresIn());
   }
-  
+
+  @Override
   public synchronized void updateAccessToken(String accessToken, int expiresInSeconds) {
     this.accessToken = accessToken;
-    this.expiresTime = System.currentTimeMillis() + (expiresInSeconds - 200) * 1000l;
+    this.expiresTime = System.currentTimeMillis() + (expiresInSeconds - 200) * 1000L;
   }
 
+  @Override
   public void expireAccessToken() {
     this.expiresTime = 0;
   }
 
+  @Override
   public String getJsapiTicket() {
-    return jsapiTicket;
+    return this.jsapiTicket;
+  }
+
+  @Override
+  public Lock getJsapiTicketLock() {
+    return this.jsapiTicketLock;
   }
 
   public void setJsapiTicket(String jsapiTicket) {
@@ -74,23 +97,26 @@ public class WxMpInMemoryConfigStorage implements WxMpConfigStorage {
   }
 
   public long getJsapiTicketExpiresTime() {
-    return jsapiTicketExpiresTime;
+    return this.jsapiTicketExpiresTime;
   }
 
   public void setJsapiTicketExpiresTime(long jsapiTicketExpiresTime) {
     this.jsapiTicketExpiresTime = jsapiTicketExpiresTime;
   }
 
+  @Override
   public boolean isJsapiTicketExpired() {
     return System.currentTimeMillis() > this.jsapiTicketExpiresTime;
   }
 
+  @Override
   public synchronized void updateJsapiTicket(String jsapiTicket, int expiresInSeconds) {
     this.jsapiTicket = jsapiTicket;
     // 预留200秒的时间
-    this.jsapiTicketExpiresTime = System.currentTimeMillis() + (expiresInSeconds - 200) * 1000l;
+    this.jsapiTicketExpiresTime = System.currentTimeMillis() + (expiresInSeconds - 200) * 1000L;
   }
 
+  @Override
   public void expireJsapiTicket() {
     this.jsapiTicketExpiresTime = 0;
   }
@@ -98,36 +124,49 @@ public class WxMpInMemoryConfigStorage implements WxMpConfigStorage {
   /**
    * 卡券api_ticket
    */
+  @Override
   public String getCardApiTicket() {
-    return cardApiTicket;
+    return this.cardApiTicket;
   }
 
+  @Override
+  public Lock getCardApiTicketLock() {
+    return this.cardApiTicketLock;
+  }
+
+  @Override
   public boolean isCardApiTicketExpired() {
     return System.currentTimeMillis() > this.cardApiTicketExpiresTime;
   }
 
+  @Override
   public synchronized void updateCardApiTicket(String cardApiTicket, int expiresInSeconds) {
     this.cardApiTicket = cardApiTicket;
     // 预留200秒的时间
-    this.cardApiTicketExpiresTime = System.currentTimeMillis() + (expiresInSeconds - 200) * 1000l;
+    this.cardApiTicketExpiresTime = System.currentTimeMillis() + (expiresInSeconds - 200) * 1000L;
   }
 
+  @Override
   public void expireCardApiTicket() {
     this.cardApiTicketExpiresTime = 0;
   }
 
+  @Override
   public String getAppId() {
     return this.appId;
   }
 
+  @Override
   public String getSecret() {
     return this.secret;
   }
 
+  @Override
   public String getToken() {
     return this.token;
   }
 
+  @Override
   public long getExpiresTime() {
     return this.expiresTime;
   }
@@ -144,8 +183,9 @@ public class WxMpInMemoryConfigStorage implements WxMpConfigStorage {
     this.token = token;
   }
 
+  @Override
   public String getAesKey() {
-    return aesKey;
+    return this.aesKey;
   }
 
   public void setAesKey(String aesKey) {
@@ -169,64 +209,50 @@ public class WxMpInMemoryConfigStorage implements WxMpConfigStorage {
     this.oauth2redirectUri = oauth2redirectUri;
   }
 
-  public String getHttp_proxy_host() {
-    return http_proxy_host;
+  @Override
+  public String getHttpProxyHost() {
+    return this.httpProxyHost;
   }
 
-  public void setHttp_proxy_host(String http_proxy_host) {
-    this.http_proxy_host = http_proxy_host;
+  public void setHttpProxyHost(String httpProxyHost) {
+    this.httpProxyHost = httpProxyHost;
   }
 
-  public int getHttp_proxy_port() {
-    return http_proxy_port;
+  @Override
+  public int getHttpProxyPort() {
+    return this.httpProxyPort;
   }
 
-  public void setHttp_proxy_port(int http_proxy_port) {
-    this.http_proxy_port = http_proxy_port;
+  public void setHttpProxyPort(int httpProxyPort) {
+    this.httpProxyPort = httpProxyPort;
   }
 
-  public String getHttp_proxy_username() {
-    return http_proxy_username;
+  @Override
+  public String getHttpProxyUsername() {
+    return this.httpProxyUsername;
   }
 
-  public void setHttp_proxy_username(String http_proxy_username) {
-    this.http_proxy_username = http_proxy_username;
+  public void setHttpProxyUsername(String httpProxyUsername) {
+    this.httpProxyUsername = httpProxyUsername;
   }
 
-  public String getHttp_proxy_password() {
-    return http_proxy_password;
+  @Override
+  public String getHttpProxyPassword() {
+    return this.httpProxyPassword;
   }
 
-  public void setHttp_proxy_password(String http_proxy_password) {
-    this.http_proxy_password = http_proxy_password;
+  public void setHttpProxyPassword(String httpProxyPassword) {
+    this.httpProxyPassword = httpProxyPassword;
   }
 
   @Override
   public String toString() {
-    return "WxMpInMemoryConfigStorage{" +
-        "appId='" + appId + '\'' +
-        ", secret='" + secret + '\'' +
-        ", token='" + token + '\'' +
-        ", partnerId='" + partnerId + '\'' +
-        ", partnerKey='" + partnerKey + '\'' +
-        ", accessToken='" + accessToken + '\'' +
-        ", aesKey='" + aesKey + '\'' +
-        ", expiresTime=" + expiresTime +
-        ", http_proxy_host='" + http_proxy_host + '\'' +
-        ", http_proxy_port=" + http_proxy_port +
-        ", http_proxy_username='" + http_proxy_username + '\'' +
-        ", http_proxy_password='" + http_proxy_password + '\'' +
-        ", jsapiTicket='" + jsapiTicket + '\'' +
-        ", jsapiTicketExpiresTime='" + jsapiTicketExpiresTime + '\'' +
-        ", cardApiTicket='" + cardApiTicket + '\'' +
-        ", cardApiTicketExpiresTime='" + cardApiTicketExpiresTime + '\'' +
-        ", tmpDirFile='" + tmpDirFile + '\'' +
-        '}';
+    return ToStringUtils.toSimpleString(this);
   }
 
   @Override
   public String getPartnerId() {
-      return partnerId;
+      return this.partnerId;
   }
 
   public void setPartnerId(String partnerId) {
@@ -235,7 +261,7 @@ public class WxMpInMemoryConfigStorage implements WxMpConfigStorage {
 
   @Override
   public String getPartnerKey() {
-      return partnerKey;
+      return this.partnerKey;
   }
 
   public void setPartnerKey(String partnerKey) {
@@ -253,16 +279,21 @@ public class WxMpInMemoryConfigStorage implements WxMpConfigStorage {
 
   @Override
   public SSLContext getSSLContext() {
-    return sslContext;
+    return this.sslContext;
   }
-  
+
   public void setSSLContext(SSLContext context) {
-    sslContext = context;
+    this.sslContext = context;
   }
 
   @Override
   public ApacheHttpClientBuilder getApacheHttpClientBuilder() {
     return this.apacheHttpClientBuilder;
+  }
+
+  @Override
+  public boolean autoRefreshToken() {
+    return true;
   }
 
   public void setApacheHttpClientBuilder(ApacheHttpClientBuilder apacheHttpClientBuilder) {

@@ -8,18 +8,18 @@ import org.testng.annotations.Test;
 
 /**
  * 测试短连接
- * 
+ *
  * @author chanjarster
  */
-@Test(groups = "shortURLAPI", dependsOnGroups = { "baseAPI" })
+@Test(groups = "shortURLAPI")
 @Guice(modules = ApiTestModule.class)
 public class WxMpShortUrlAPITest {
 
   @Inject
-  protected WxMpServiceImpl wxService;
+  protected WxMpService wxService;
 
   public void testShortUrl() throws WxErrorException {
-    String shortUrl = wxService.shortUrl("www.baidu.com");
+    String shortUrl = this.wxService.shortUrl("www.baidu.com");
     Assert.assertNotNull(shortUrl);
   }
 

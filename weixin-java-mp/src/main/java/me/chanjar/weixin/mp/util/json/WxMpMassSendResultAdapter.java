@@ -21,6 +21,7 @@ import java.lang.reflect.Type;
  */
 public class WxMpMassSendResultAdapter implements JsonDeserializer<WxMpMassSendResult> {
 
+  @Override
   public WxMpMassSendResult deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
     WxMpMassSendResult sendResult = new WxMpMassSendResult();
     JsonObject sendResultJsonObject = json.getAsJsonObject();
@@ -33,6 +34,9 @@ public class WxMpMassSendResultAdapter implements JsonDeserializer<WxMpMassSendR
     }
     if (sendResultJsonObject.get("msg_id") != null && !sendResultJsonObject.get("msg_id").isJsonNull()) {
       sendResult.setMsgId(GsonHelper.getAsString(sendResultJsonObject.get("msg_id")));
+    }
+    if (sendResultJsonObject.get("msg_data_id") != null && !sendResultJsonObject.get("msg_data_id").isJsonNull()) {
+      sendResult.setMsgDataId(GsonHelper.getAsString(sendResultJsonObject.get("msg_data_id")));
     }
     return sendResult;
   }

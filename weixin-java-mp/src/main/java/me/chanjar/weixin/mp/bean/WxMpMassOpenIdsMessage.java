@@ -1,19 +1,20 @@
 package me.chanjar.weixin.mp.bean;
 
-import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
+
 /**
- * OpenId列表群发的消息
+ * openid列表群发的消息
  * 
  * @author chanjarster
  */
 public class WxMpMassOpenIdsMessage implements Serializable {
+  private static final long serialVersionUID = -8022910911104788999L;
   
-  private List<String> toUsers = new ArrayList<String>();
+  private List<String> toUsers = new ArrayList<>();
   private String msgType;
   private String content;
   private String mediaId;
@@ -23,7 +24,7 @@ public class WxMpMassOpenIdsMessage implements Serializable {
   }
   
   public String getMsgType() {
-    return msgType;
+    return this.msgType;
   }
 
   /**
@@ -43,7 +44,7 @@ public class WxMpMassOpenIdsMessage implements Serializable {
   }
 
   public String getContent() {
-    return content;
+    return this.content;
   }
 
   public void setContent(String content) {
@@ -51,7 +52,7 @@ public class WxMpMassOpenIdsMessage implements Serializable {
   }
 
   public String getMediaId() {
-    return mediaId;
+    return this.mediaId;
   }
 
   public void setMediaId(String mediaId) {
@@ -63,18 +64,26 @@ public class WxMpMassOpenIdsMessage implements Serializable {
   }
 
   /**
-   * OpenId列表，最多支持10,000个
-   * @return
+   * openid列表，最多支持10,000个
    */
   public List<String> getToUsers() {
-    return toUsers;
+    return this.toUsers;
   }
 
   /**
-   * 添加OpenId，最多支持10,000个
-   * @param openId
+   * 添加openid，最多支持10,000个
+   * @param openid
    */
-  public void addUser(String openId) {
-    this.toUsers.add(openId);
+  public void addUser(String openid) {
+    this.toUsers.add(openid);
   }
+
+  /**
+   * 提供set方法，方便客户端直接设置所有群发对象的openid列表
+   * @param toUsers
+   */
+  public void setToUsers(List<String> toUsers) {
+    this.toUsers = toUsers;
+  }
+
 }

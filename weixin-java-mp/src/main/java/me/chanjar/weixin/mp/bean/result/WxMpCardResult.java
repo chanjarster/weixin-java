@@ -1,5 +1,6 @@
 package me.chanjar.weixin.mp.bean.result;
 
+import me.chanjar.weixin.common.util.ToStringUtils;
 import me.chanjar.weixin.mp.bean.WxMpCard;
 
 import java.io.Serializable;
@@ -11,6 +12,11 @@ import java.io.Serializable;
  * @version 15/11/11
  */
 public class WxMpCardResult implements Serializable {
+
+  /**
+   *
+   */
+  private static final long serialVersionUID = -7950878428289035637L;
 
   private String errorCode;
 
@@ -25,7 +31,7 @@ public class WxMpCardResult implements Serializable {
   private Boolean canConsume;
 
   public String getErrorCode() {
-    return errorCode;
+    return this.errorCode;
   }
 
   public void setErrorCode(String errorCode) {
@@ -33,7 +39,7 @@ public class WxMpCardResult implements Serializable {
   }
 
   public String getErrorMsg() {
-    return errorMsg;
+    return this.errorMsg;
   }
 
   public void setErrorMsg(String errorMsg) {
@@ -41,7 +47,7 @@ public class WxMpCardResult implements Serializable {
   }
 
   public String getOpenId() {
-    return openId;
+    return this.openId;
   }
 
   public void setOpenId(String openId) {
@@ -49,7 +55,7 @@ public class WxMpCardResult implements Serializable {
   }
 
   public WxMpCard getCard() {
-    return card;
+    return this.card;
   }
 
   public void setCard(WxMpCard card) {
@@ -58,18 +64,11 @@ public class WxMpCardResult implements Serializable {
 
   @Override
   public String toString() {
-    return "WxMpCardResult{" +
-        "errorCode='" + errorCode + '\'' +
-        ", errorMsg='" + errorMsg + '\'' +
-        ", openId='" + openId + '\'' +
-        ", card=" + card +
-        ", userCardStatus='" + userCardStatus + '\'' +
-        ", canConsume=" + canConsume +
-        '}';
+    return ToStringUtils.toSimpleString(this);
   }
 
   public String getUserCardStatus() {
-    return userCardStatus;
+    return this.userCardStatus;
   }
 
   public void setUserCardStatus(String userCardStatus) {
@@ -77,7 +76,7 @@ public class WxMpCardResult implements Serializable {
   }
 
   public Boolean getCanConsume() {
-    return canConsume;
+    return this.canConsume;
   }
 
   public void setCanConsume(Boolean canConsume) {
