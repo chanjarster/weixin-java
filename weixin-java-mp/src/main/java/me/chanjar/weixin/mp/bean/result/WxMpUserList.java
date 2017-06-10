@@ -7,41 +7,54 @@ import java.util.List;
 
 /**
  * 关注者列表
- * @author chanjarster
  *
+ * @author chanjarster
  */
 public class WxMpUserList {
 
-  protected int total = -1;
+  protected long total = -1;
   protected int count = -1;
-  protected List<String> openIds = new ArrayList<String>();
-  protected String nextOpenId;
-  public int getTotal() {
-    return total;
+  protected List<String> openids = new ArrayList<>();
+  protected String nextOpenid;
+
+  public static WxMpUserList fromJson(String json) {
+    return WxMpGsonBuilder.INSTANCE.create().fromJson(json, WxMpUserList.class);
   }
-  public void setTotal(int total) {
+
+  public long getTotal() {
+    return this.total;
+  }
+
+  public void setTotal(long total) {
     this.total = total;
   }
+
   public int getCount() {
-    return count;
+    return this.count;
   }
+
   public void setCount(int count) {
     this.count = count;
   }
-  public List<String> getOpenIds() {
-    return openIds;
+
+  public List<String> getOpenids() {
+    return this.openids;
   }
-  public void setOpenIds(List<String> openIds) {
-    this.openIds = openIds;
+
+  public void setOpenids(List<String> openids) {
+    this.openids = openids;
   }
-  public String getNextOpenId() {
-    return nextOpenId;
+
+  public String getNextOpenid() {
+    return this.nextOpenid;
   }
-  public void setNextOpenId(String nextOpenId) {
-    this.nextOpenId = nextOpenId;
+
+  public void setNextOpenid(String nextOpenid) {
+    this.nextOpenid = nextOpenid;
   }
-  
-  public static WxMpUserList fromJson(String json) {
-    return WxMpGsonBuilder.INSTANCE.create().fromJson(json, WxMpUserList.class);
+
+  @Override
+  public String toString() {
+    return WxMpGsonBuilder.INSTANCE.create().toJson(this);
   }
 }

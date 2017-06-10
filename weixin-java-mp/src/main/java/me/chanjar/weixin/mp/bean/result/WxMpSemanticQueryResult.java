@@ -6,13 +6,17 @@ import java.io.Serializable;
 
 /**
  * 语义理解查询结果对象
- *
+ * <p>
  * http://mp.weixin.qq.com/wiki/index.php?title=语义理解
  *
  * @author Daniel Qian
  */
 public class WxMpSemanticQueryResult implements Serializable {
 
+  /**
+   *
+   */
+  private static final long serialVersionUID = 4811088544804441365L;
   private String query;
   private String type;
   private String semantic;
@@ -20,8 +24,12 @@ public class WxMpSemanticQueryResult implements Serializable {
   private String answer;
   private String text;
 
+  public static WxMpSemanticQueryResult fromJson(String json) {
+    return WxMpGsonBuilder.create().fromJson(json, WxMpSemanticQueryResult.class);
+  }
+
   public String getQuery() {
-    return query;
+    return this.query;
   }
 
   public void setQuery(String query) {
@@ -29,7 +37,7 @@ public class WxMpSemanticQueryResult implements Serializable {
   }
 
   public String getType() {
-    return type;
+    return this.type;
   }
 
   public void setType(String type) {
@@ -37,7 +45,7 @@ public class WxMpSemanticQueryResult implements Serializable {
   }
 
   public String getSemantic() {
-    return semantic;
+    return this.semantic;
   }
 
   public void setSemantic(String semantic) {
@@ -45,7 +53,7 @@ public class WxMpSemanticQueryResult implements Serializable {
   }
 
   public String getResult() {
-    return result;
+    return this.result;
   }
 
   public void setResult(String result) {
@@ -53,7 +61,7 @@ public class WxMpSemanticQueryResult implements Serializable {
   }
 
   public String getAnswer() {
-    return answer;
+    return this.answer;
   }
 
   public void setAnswer(String answer) {
@@ -61,15 +69,11 @@ public class WxMpSemanticQueryResult implements Serializable {
   }
 
   public String getText() {
-    return text;
+    return this.text;
   }
 
   public void setText(String text) {
     this.text = text;
-  }
-
-  public static WxMpSemanticQueryResult fromJson(String json) {
-    return WxMpGsonBuilder.create().fromJson(json, WxMpSemanticQueryResult.class);
   }
 
 }

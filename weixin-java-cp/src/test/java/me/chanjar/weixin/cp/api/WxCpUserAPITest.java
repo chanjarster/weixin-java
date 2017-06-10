@@ -2,40 +2,42 @@ package me.chanjar.weixin.cp.api;
 
 import com.google.inject.Inject;
 import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.cp.bean.WxCpDepart;
+import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
 import me.chanjar.weixin.cp.bean.WxCpUser;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.testng.Assert;
 import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
+import static org.testng.Assert.assertNotEquals;
+
 /**
  * 测试用户接口
  *
  * @author Daniel Qian
  */
-@Test(groups = "userAPI", dependsOnGroups = "baseAPI")
+@Test(groups = "userAPI")
 @Guice(modules = ApiTestModule.class)
 public class WxCpUserAPITest {
 
   @Inject
   protected WxCpServiceImpl wxCpService;
 
-  protected WxCpDepart depart;
-
   public void testUserCreate() throws WxErrorException {
     WxCpUser user = new WxCpUser();
     user.setUserId("some.woman");
     user.setName("Some Woman");
-    user.setDepartIds(new Integer[] { 9, 8 });
+    user.setDepartIds(new Integer[]{9, 8});
     user.setEmail("none@none.com");
     user.setGender("女");
     user.setMobile("13560084979");
     user.setPosition("woman");
-    user.setTel("3300393");
+    user.setTelephone("3300393");
     user.addExtAttr("爱好", "table");
-    wxCpService.userCreate(user);
+    this.wxCpService.userCreate(user);
   }
 
   @Test(dependsOnMethods = "testUserCreate")
@@ -44,23 +46,31 @@ public class WxCpUserAPITest {
     user.setUserId("some.woman");
     user.setName("Some Woman");
     user.addExtAttr("爱好", "table2");
-    wxCpService.userUpdate(user);
+    this.wxCpService.userUpdate(user);
   }
 
   @Test(dependsOnMethods = "testUserUpdate")
   public void testUserGet() throws WxErrorException {
-    WxCpUser user = wxCpService.userGet("some.woman");
+    WxCpUser user = this.wxCpService.userGet("some.woman");
     Assert.assertNotNull(user);
   }
 
   @Test(dependsOnMethods = "testUserGet")
   public void testDepartGetUsers() throws WxErrorException {
-    List<WxCpUser> users = wxCpService.departGetUsers(1, true, 0);
-    Assert.assertNotEquals(users.size(), 0);
+    List<WxCpUser> users = this.wxCpService.departGetUsers(1, true, 0);
+    assertNotEquals(users.size(), 0);
   }
 
   @Test(dependsOnMethods = "testDepartGetUsers")
   public void testUserDelete() throws WxErrorException {
-    wxCpService.userDelete("some.woman");
+    this.wxCpService.userDelete("some.woman");
+  }
+
+  public void testUserList() throws WxErrorException {
+    List<WxCpUser> users = this.wxCpService.userList(1, true, 0);
+    assertNotEquals(users.size(), 0);
+    for (WxCpUser user : users) {
+      System.out.println(ToStringBuilder.reflectionToString(user, ToStringStyle.MULTI_LINE_STYLE));
+    }
   }
 }

@@ -1,101 +1,114 @@
 package me.chanjar.weixin.mp.api;
 
 import me.chanjar.weixin.common.bean.WxAccessToken;
-import me.chanjar.weixin.common.util.http.ApacheHttpClientBuilder;
+import me.chanjar.weixin.common.util.http.apache.ApacheHttpClientBuilder;
 
-import javax.net.ssl.SSLContext;
 import java.io.File;
+import java.util.concurrent.locks.Lock;
 
 /**
  * 微信客户端配置存储
- * @author chanjarster
  *
+ * @author chanjarster
  */
 public interface WxMpConfigStorage {
 
-  public String getAccessToken();
+  String getAccessToken();
 
-  public boolean isAccessTokenExpired();
+  Lock getAccessTokenLock();
+
+  boolean isAccessTokenExpired();
 
   /**
    * 强制将access token过期掉
    */
-  public void expireAccessToken();
+  void expireAccessToken();
 
   /**
    * 应该是线程安全的
-   * @param accessToken
+   *
+   * @param accessToken 要更新的WxAccessToken对象
    */
-  public void updateAccessToken(WxAccessToken accessToken);
+  void updateAccessToken(WxAccessToken accessToken);
 
   /**
    * 应该是线程安全的
-   * @param accessToken
-   * @param expiresIn
+   *
+   * @param accessToken      新的accessToken值
+   * @param expiresInSeconds 过期时间，以秒为单位
    */
-  public void updateAccessToken(String accessToken, int expiresIn);
+  void updateAccessToken(String accessToken, int expiresInSeconds);
 
-  public String getJsapiTicket();
+  String getJsapiTicket();
 
-  public boolean isJsapiTicketExpired();
+  Lock getJsapiTicketLock();
+
+  boolean isJsapiTicketExpired();
 
   /**
    * 强制将jsapi ticket过期掉
    */
-  public void expireJsapiTicket();
+  void expireJsapiTicket();
 
   /**
    * 应该是线程安全的
-   * @param jsapiTicket
+   *
+   * @param jsapiTicket      新的jsapi ticket值
+   * @param expiresInSeconds 过期时间，以秒为单位
    */
-  public void updateJsapiTicket(String jsapiTicket, int expiresInSeconds);
+  void updateJsapiTicket(String jsapiTicket, int expiresInSeconds);
 
-  public String getCardApiTicket();
+  String getCardApiTicket();
 
-  public boolean isCardApiTicketExpired();
+  Lock getCardApiTicketLock();
+
+  boolean isCardApiTicketExpired();
 
   /**
    * 强制将卡券api ticket过期掉
    */
-  public void expireCardApiTicket();
+  void expireCardApiTicket();
 
   /**
    * 应该是线程安全的
-   * @param cardApiTicket
+   *
+   * @param cardApiTicket    新的cardApi ticket值
+   * @param expiresInSeconds 过期时间，以秒为单位
    */
-  public void updateCardApiTicket(String cardApiTicket, int expiresInSeconds);
+  void updateCardApiTicket(String cardApiTicket, int expiresInSeconds);
 
-  public String getAppId();
+  String getAppId();
 
-  public String getSecret();
+  String getSecret();
 
-    public String getPartnerId();
+  String getToken();
 
-    public String getPartnerKey();
+  String getAesKey();
 
-  public String getToken();
+  long getExpiresTime();
 
-  public String getAesKey();
+  String getOauth2redirectUri();
 
-  public long getExpiresTime();
+  String getHttpProxyHost();
 
-  public String getOauth2redirectUri();
+  int getHttpProxyPort();
 
-  public String getHttp_proxy_host();
+  String getHttpProxyUsername();
 
-  public int getHttp_proxy_port();
+  String getHttpProxyPassword();
 
-  public String getHttp_proxy_username();
-
-  public String getHttp_proxy_password();
-  
-  public File getTmpDirFile();
-
-  public SSLContext getSSLContext();
+  File getTmpDirFile();
 
   /**
    * http client builder
+   *
    * @return ApacheHttpClientBuilder
    */
-  public ApacheHttpClientBuilder getApacheHttpClientBuilder();
+  ApacheHttpClientBuilder getApacheHttpClientBuilder();
+
+  /**
+   * 是否自动刷新token
+   */
+  boolean autoRefreshToken();
+
 }

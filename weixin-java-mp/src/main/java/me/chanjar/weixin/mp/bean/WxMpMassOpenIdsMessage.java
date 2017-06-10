@@ -7,23 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * OpenId列表群发的消息
- * 
+ * openid列表群发的消息
+ *
  * @author chanjarster
  */
 public class WxMpMassOpenIdsMessage implements Serializable {
-  
-  private List<String> toUsers = new ArrayList<String>();
+  private static final long serialVersionUID = -8022910911104788999L;
+
+  private List<String> toUsers = new ArrayList<>();
   private String msgType;
   private String content;
   private String mediaId;
+  private boolean sendIgnoreReprint = false;
 
   public WxMpMassOpenIdsMessage() {
     super();
   }
-  
+
   public String getMsgType() {
-    return msgType;
+    return this.msgType;
   }
 
   /**
@@ -36,6 +38,7 @@ public class WxMpMassOpenIdsMessage implements Serializable {
    * {@link me.chanjar.weixin.common.api.WxConsts#MASS_MSG_VOICE}
    * 如果msgtype和media_id不匹配的话，会返回系统繁忙的错误
    * </pre>
+   *
    * @param msgType
    */
   public void setMsgType(String msgType) {
@@ -43,7 +46,7 @@ public class WxMpMassOpenIdsMessage implements Serializable {
   }
 
   public String getContent() {
-    return content;
+    return this.content;
   }
 
   public void setContent(String content) {
@@ -51,7 +54,7 @@ public class WxMpMassOpenIdsMessage implements Serializable {
   }
 
   public String getMediaId() {
-    return mediaId;
+    return this.mediaId;
   }
 
   public void setMediaId(String mediaId) {
@@ -63,18 +66,38 @@ public class WxMpMassOpenIdsMessage implements Serializable {
   }
 
   /**
-   * OpenId列表，最多支持10,000个
-   * @return
+   * openid列表，最多支持10,000个
    */
   public List<String> getToUsers() {
-    return toUsers;
+    return this.toUsers;
   }
 
   /**
-   * 添加OpenId，最多支持10,000个
-   * @param openId
+   * 提供set方法，方便客户端直接设置所有群发对象的openid列表
+   *
+   * @param toUsers
    */
-  public void addUser(String openId) {
-    this.toUsers.add(openId);
+  public void setToUsers(List<String> toUsers) {
+    this.toUsers = toUsers;
+  }
+
+  /**
+   * 添加openid，最多支持10,000个
+   *
+   * @param openid
+   */
+  public void addUser(String openid) {
+    this.toUsers.add(openid);
+  }
+
+  public boolean isSendIgnoreReprint() {
+    return sendIgnoreReprint;
+  }
+
+  /**
+   * @param sendIgnoreReprint 文章被判定为转载时，是否继续进行群发操作。
+   */
+  public void setSendIgnoreReprint(boolean sendIgnoreReprint) {
+    this.sendIgnoreReprint = sendIgnoreReprint;
   }
 }
