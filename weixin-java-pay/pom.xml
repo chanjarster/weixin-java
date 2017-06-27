@@ -27,7 +27,11 @@
     <dependency>
       <groupId>org.jodd</groupId>
       <artifactId>jodd-http</artifactId>
+<<<<<<< HEAD
       <scope>provided</scope>
+=======
+      <scope>compile</scope>
+>>>>>>> jodd-http对于微信支付来说是必须依赖项
     </dependency>
 
     <dependency>
