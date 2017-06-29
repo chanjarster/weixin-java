@@ -87,7 +87,11 @@ public class WxMaServiceImpl implements WxMaService, RequestHttp<CloseableHttpCl
     try {
       lock.lock();
 
-      if (this.getWxMaConfig().isAccessTokenExpired() || forceRefresh) {
+      if (forceRefresh) {
+        this.getWxMaConfig().expireAccessToken();
+      }
+
+      if (this.getWxMaConfig().isAccessTokenExpired()) {
         String url = String.format(WxMaService.GET_ACCESS_TOKEN_URL, this.getWxMaConfig().getAppid(),
           this.getWxMaConfig().getSecret());
         try {
@@ -209,7 +213,7 @@ public class WxMaServiceImpl implements WxMaService, RequestHttp<CloseableHttpCl
 
       if (error.getErrorCode() != 0) {
         this.log.error("\n【请求地址】: {}\n【请求参数】：{}\n【错误信息】：{}", uriWithAccessToken, data, error);
-        throw new WxErrorException(error, e);
+        throw new WxErrorException(error);
       }
       return null;
     } catch (IOException e) {
