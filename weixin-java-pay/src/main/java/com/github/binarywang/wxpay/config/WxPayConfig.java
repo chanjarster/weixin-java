@@ -18,17 +18,6 @@ import java.security.KeyStore;
  * @author Binary Wang (https://github.com/binarywang)
  */
 public class WxPayConfig {
-
-  /**
-   * http请求连接超时时间
-   */
-  private int httpConnectionTimeout = 5000;
-
-  /**
-   * http请求数据读取等待时间
-   */
-  private int httpTimeout = 10000;
-
   private String appId;
   private String subAppId;
   private String mchId;
@@ -39,10 +28,6 @@ public class WxPayConfig {
   private SSLContext sslContext;
   private String keyPath;
   private boolean useSandboxEnv = false;
-  private String httpProxyHost;
-  private Integer httpProxyPort;
-  private String httpProxyUsername;
-  private String httpProxyPassword;
 
   public String getKeyPath() {
     return keyPath;
@@ -163,20 +148,20 @@ public class WxPayConfig {
   }
 
   public SSLContext initSSLContext() throws WxPayException {
-    if (StringUtils.isBlank(this.getMchId())) {
-      throw new WxPayException("请确保商户号mchId已设置");
+    if (StringUtils.isBlank(mchId)) {
+      throw new IllegalArgumentException("请确保商户号mchId已设置");
     }
 
-    if (StringUtils.isBlank(this.getKeyPath())) {
-      throw new WxPayException("请确保证书文件地址keyPath已配置");
+    if (StringUtils.isBlank(this.keyPath)) {
+      throw new IllegalArgumentException("请确保证书文件地址keyPath已配置");
     }
 
     InputStream inputStream;
     final String prefix = "classpath:";
-    String fileHasProblemMsg = "证书文件【" + this.getKeyPath() + "】有问题，请核实！";
-    String fileNotFoundMsg = "证书文件【" + this.getKeyPath() + "】不存在，请核实！";
-    if (this.getKeyPath().startsWith(prefix)) {
-      String path = StringUtils.removeFirst(this.getKeyPath(), prefix);
+    String fileHasProblemMsg = "证书文件【" + this.keyPath + "】有问题，请核实！";
+    String fileNotFoundMsg = "证书文件【" + this.keyPath + "】不存在，请核实！";
+    if (this.keyPath.startsWith(prefix)) {
+      String path = StringUtils.removeFirst(this.keyPath, prefix);
       if (!path.startsWith("/")) {
         path = "/" + path;
       }
@@ -186,7 +171,7 @@ public class WxPayConfig {
       }
     } else {
       try {
-        File file = new File(this.getKeyPath());
+        File file = new File(this.keyPath);
         if (!file.exists()) {
           throw new WxPayException(fileNotFoundMsg);
         }
@@ -199,7 +184,7 @@ public class WxPayConfig {
 
     try {
       KeyStore keystore = KeyStore.getInstance("PKCS12");
-      char[] partnerId2charArray = this.getMchId().toCharArray();
+      char[] partnerId2charArray = mchId.toCharArray();
       keystore.load(inputStream, partnerId2charArray);
       this.sslContext = SSLContexts.custom().loadKeyMaterial(keystore, partnerId2charArray).build();
       return this.sslContext;
@@ -208,59 +193,5 @@ public class WxPayConfig {
     } finally {
       IOUtils.closeQuietly(inputStream);
     }
-  }
-
-  /**
-   * http请求连接超时时间
-   */
-  public int getHttpConnectionTimeout() {
-    return this.httpConnectionTimeout;
-  }
-
-  public void setHttpConnectionTimeout(int httpConnectionTimeout) {
-    this.httpConnectionTimeout = httpConnectionTimeout;
-  }
-
-  /**
-   * http请求数据读取等待时间
-   */
-  public int getHttpTimeout() {
-    return this.httpTimeout;
-  }
-
-  public void setHttpTimeout(int httpTimeout) {
-    this.httpTimeout = httpTimeout;
-  }
-
-  public String getHttpProxyHost() {
-    return httpProxyHost;
-  }
-
-  public void setHttpProxyHost(String httpProxyHost) {
-    this.httpProxyHost = httpProxyHost;
-  }
-
-  public Integer getHttpProxyPort() {
-    return httpProxyPort;
-  }
-
-  public void setHttpProxyPort(Integer httpProxyPort) {
-    this.httpProxyPort = httpProxyPort;
-  }
-
-  public String getHttpProxyUsername() {
-    return httpProxyUsername;
-  }
-
-  public void setHttpProxyUsername(String httpProxyUsername) {
-    this.httpProxyUsername = httpProxyUsername;
-  }
-
-  public String getHttpProxyPassword() {
-    return httpProxyPassword;
-  }
-
-  public void setHttpProxyPassword(String httpProxyPassword) {
-    this.httpProxyPassword = httpProxyPassword;
   }
 }
