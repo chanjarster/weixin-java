@@ -6,8 +6,6 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.util.http.MediaUploadRequestExecutor;
 import me.chanjar.weixin.common.util.http.RequestHttp;
 import okhttp3.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +13,7 @@ import java.io.IOException;
 /**
  * Created by ecoolper on 2017/5/5.
  */
-public class OkHttpMediaUploadRequestExecutor extends MediaUploadRequestExecutor<OkHttpClient, OkHttpProxyInfo> {
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+public class OkHttpMediaUploadRequestExecutor extends MediaUploadRequestExecutor<ConnectionPool, OkHttpProxyInfo> {
 
   public OkHttpMediaUploadRequestExecutor(RequestHttp requestHttp) {
     super(requestHttp);
@@ -24,9 +21,23 @@ public class OkHttpMediaUploadRequestExecutor extends MediaUploadRequestExecutor
 
   @Override
   public WxMediaUploadResult execute(String uri, File file) throws WxErrorException, IOException {
-    logger.debug("OkHttpMediaUploadRequestExecutor is running");
+    OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().connectionPool(requestHttp.getRequestHttpClient());
+    //设置代理
+    if (requestHttp.getRequestHttpProxy() != null) {
+      clientBuilder.proxy(requestHttp.getRequestHttpProxy().getProxy());
+    }
+    //设置授权
+    clientBuilder.authenticator(new Authenticator() {
+      @Override
+      public Request authenticate(Route route, Response response) throws IOException {
+        String credential = Credentials.basic(requestHttp.getRequestHttpProxy().getProxyUsername(), requestHttp.getRequestHttpProxy().getProxyPassword());
+        return response.request().newBuilder()
+          .header("Authorization", credential)
+          .build();
+      }
+    });
     //得到httpClient
-    OkHttpClient client = requestHttp.getRequestHttpClient();
+    OkHttpClient client = clientBuilder.build();
 
     RequestBody body = new MultipartBody.Builder()
       .setType(MediaType.parse("multipart/form-data"))
