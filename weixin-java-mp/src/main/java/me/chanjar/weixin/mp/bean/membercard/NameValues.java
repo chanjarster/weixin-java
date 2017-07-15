@@ -1,5 +1,6 @@
 package me.chanjar.weixin.mp.bean.membercard;
 
+<<<<<<< HEAD
 import java.io.Serializable;
 
 /**
@@ -8,6 +9,12 @@ import java.io.Serializable;
 public class NameValues implements Serializable{
   private static final long serialVersionUID = -8529369702944594330L;
 
+=======
+/**
+ * Created by YuJian on 2017/7/11.
+ */
+public class NameValues {
+>>>>>>> 新增会员卡相关接口 (#280)
   private String name;
 
   private String value;
