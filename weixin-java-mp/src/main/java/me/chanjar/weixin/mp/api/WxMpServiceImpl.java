@@ -79,6 +79,8 @@ public class WxMpServiceImpl implements WxMpService {
 
   private int maxRetryTimes = 5;
 
+  private volatile int repeatTimes = 0;
+
   protected WxSessionManager sessionManager = new StandardSessionManager();
 
   public boolean checkSignature(String timestamp, String nonce, String signature) {
@@ -658,6 +660,7 @@ public class WxMpServiceImpl implements WxMpService {
       try {
         return executeInternal(executor, uri, data);
       } catch (WxErrorException e) {
+        repeatTimes = 0;
         WxError error = e.getError();
         /**
          * -1 系统繁忙, 1000ms后重试
@@ -699,8 +702,13 @@ public class WxMpServiceImpl implements WxMpService {
        */
       if (error.getErrorCode() == 42001 || error.getErrorCode() == 40001) {
         // 强制设置wxMpConfigStorage它的access token过期了，这样在下一次请求里就会刷新access token
-        wxMpConfigStorage.expireAccessToken();
-        return execute(executor, uri, data);
+    	if(repeatTimes < maxRetryTimes){
+    		repeatTimes++;
+    		wxMpConfigStorage.expireAccessToken();    		
+    		return execute(executor, uri, data);
+    	}else{
+    		throw new WxErrorException(error);
+    	}
       }
       if (error.getErrorCode() != 0) {
         throw new WxErrorException(error);
