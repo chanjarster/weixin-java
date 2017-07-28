@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * Created by ecoolper on 2017/5/4.
  */
-public class OkHttpSimpleGetRequestExecutor extends SimpleGetRequestExecutor<ConnectionPool, OkHttpProxyInfo> {
+public class OkHttpSimpleGetRequestExecutor extends SimpleGetRequestExecutor<OkHttpClient, OkHttpProxyInfo> {
 
   public OkHttpSimpleGetRequestExecutor(RequestHttp requestHttp) {
     super(requestHttp);
@@ -26,26 +26,9 @@ public class OkHttpSimpleGetRequestExecutor extends SimpleGetRequestExecutor<Con
       uri += uri.endsWith("?") ? queryParam : '&' + queryParam;
     }
 
-    OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().connectionPool(requestHttp.getRequestHttpClient());
-    //设置代理
-    if (requestHttp.getRequestHttpProxy() != null) {
-      clientBuilder.proxy(requestHttp.getRequestHttpProxy().getProxy());
-    }
-    //设置授权
-    clientBuilder.authenticator(new Authenticator() {
-      @Override
-      public Request authenticate(Route route, Response response) throws IOException {
-        String credential = Credentials.basic(requestHttp.getRequestHttpProxy().getProxyUsername(), requestHttp.getRequestHttpProxy().getProxyPassword());
-        return response.request().newBuilder()
-          .header("Authorization", credential)
-          .build();
-      }
-    });
     //得到httpClient
-    OkHttpClient client = clientBuilder.build();
-
+    OkHttpClient client = requestHttp.getRequestHttpClient();
     Request request = new Request.Builder().url(uri).build();
-
     Response response = client.newCall(request).execute();
     String responseContent = response.body().string();
     WxError error = WxError.fromJson(responseContent);

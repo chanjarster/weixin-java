@@ -16,31 +16,16 @@ import java.io.IOException;
 /**
  * Created by ecoolper on 2017/5/5.
  */
-public class OkhttpMaterialNewsInfoRequestExecutor extends MaterialNewsInfoRequestExecutor<ConnectionPool, OkHttpProxyInfo> {
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+public class OkhttpMaterialNewsInfoRequestExecutor extends MaterialNewsInfoRequestExecutor<OkHttpClient, OkHttpProxyInfo> {
   public OkhttpMaterialNewsInfoRequestExecutor(RequestHttp requestHttp) {
     super(requestHttp);
   }
 
   @Override
   public WxMpMaterialNews execute(String uri, String materialId) throws WxErrorException, IOException {
-    OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().connectionPool(requestHttp.getRequestHttpClient());
-    //设置代理
-    if (requestHttp.getRequestHttpProxy() != null) {
-      clientBuilder.proxy(requestHttp.getRequestHttpProxy().getProxy());
-    }
-    //设置授权
-    clientBuilder.authenticator(new Authenticator() {
-      @Override
-      public Request authenticate(Route route, Response response) throws IOException {
-        String credential = Credentials.basic(requestHttp.getRequestHttpProxy().getProxyUsername(), requestHttp.getRequestHttpProxy().getProxyPassword());
-        return response.request().newBuilder()
-          .header("Authorization", credential)
-          .build();
-      }
-    });
+
     //得到httpClient
-    OkHttpClient client = clientBuilder.build();
+    OkHttpClient client = requestHttp.getRequestHttpClient();
 
     RequestBody requestBody = new FormBody.Builder().add("media_id", materialId).build();
     Request request = new Request.Builder().url(uri).post(requestBody).build();

@@ -14,29 +14,17 @@ import java.io.IOException;
 /**
  * Created by ecoolper on 2017/5/5.
  */
-public class OkhttpMediaImgUploadRequestExecutor extends MediaImgUploadRequestExecutor<ConnectionPool, OkHttpProxyInfo> {
+public class OkhttpMediaImgUploadRequestExecutor extends MediaImgUploadRequestExecutor<OkHttpClient, OkHttpProxyInfo> {
 
   public OkhttpMediaImgUploadRequestExecutor(RequestHttp requestHttp) {
     super(requestHttp);
   }
 
   @Override
-  public WxMediaImgUploadResult execute(String uri, File file) throws WxErrorException, IOException {
-    OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().connectionPool(requestHttp.getRequestHttpClient());
-    //设置代理
-    if (requestHttp.getRequestHttpProxy() != null) {
-      clientBuilder.proxy(requestHttp.getRequestHttpProxy().getProxy());
-    }
-    //设置授权
-    clientBuilder.authenticator(new Authenticator() {
-      @Override
-      public Request authenticate(Route route, Response response) throws IOException {
-        String credential = Credentials.basic(requestHttp.getRequestHttpProxy().getProxyUsername(), requestHttp.getRequestHttpProxy().getProxyPassword());
-        return response.request().newBuilder()
-          .header("Authorization", credential)
-          .build();
-      }
-    });
+  public WxMediaImgUploadResult execute(String uri, File data) throws WxErrorException, IOException {
+
+    //得到httpClient
+    OkHttpClient client = requestHttp.getRequestHttpClient();
 
     RequestBody body = new MultipartBody.Builder()
       .setType(MediaType.parse("multipart/form-data"))

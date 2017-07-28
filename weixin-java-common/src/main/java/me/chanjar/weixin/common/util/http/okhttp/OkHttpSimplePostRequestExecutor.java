@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * Created by ecoolper on 2017/5/4.
  */
-public class OkHttpSimplePostRequestExecutor extends SimplePostRequestExecutor<ConnectionPool, OkHttpProxyInfo> {
+public class OkHttpSimplePostRequestExecutor extends SimplePostRequestExecutor<OkHttpClient, OkHttpProxyInfo> {
 
   public OkHttpSimplePostRequestExecutor(RequestHttp requestHttp) {
     super(requestHttp);
@@ -19,27 +19,9 @@ public class OkHttpSimplePostRequestExecutor extends SimplePostRequestExecutor<C
 
   @Override
   public String execute(String uri, String postEntity) throws WxErrorException, IOException {
-    ConnectionPool pool = requestHttp.getRequestHttpClient();
-    final OkHttpProxyInfo proxyInfo = requestHttp.getRequestHttpProxy();
 
-    OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().connectionPool(pool);
-    //设置代理
-    if (proxyInfo != null) {
-      clientBuilder.proxy(proxyInfo.getProxy());
-    }
-    //设置授权
-    clientBuilder.authenticator(new Authenticator() {
-      @Override
-      public Request authenticate(Route route, Response response) throws IOException {
-        String credential = Credentials.basic(proxyInfo.getProxyUsername(), proxyInfo.getProxyPassword());
-        return response.request().newBuilder()
-          .header("Authorization", credential)
-          .build();
-      }
-    });
     //得到httpClient
-    OkHttpClient client = clientBuilder.build();
-
+    OkHttpClient client = requestHttp.getRequestHttpClient();
 
     MediaType mediaType = MediaType.parse("text/plain; charset=utf-8");
     RequestBody body = RequestBody.create(mediaType, postEntity);
