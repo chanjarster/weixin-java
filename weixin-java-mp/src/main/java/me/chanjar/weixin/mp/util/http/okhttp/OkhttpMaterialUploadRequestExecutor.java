@@ -18,30 +18,15 @@ import java.util.Map;
 /**
  * Created by ecoolper on 2017/5/5.
  */
-public class OkhttpMaterialUploadRequestExecutor extends MaterialUploadRequestExecutor<ConnectionPool, OkHttpProxyInfo> {
+public class OkhttpMaterialUploadRequestExecutor extends MaterialUploadRequestExecutor<OkHttpClient, OkHttpProxyInfo> {
   public OkhttpMaterialUploadRequestExecutor(RequestHttp requestHttp) {
     super(requestHttp);
   }
 
   @Override
   public WxMpMaterialUploadResult execute(String uri, WxMpMaterial material) throws WxErrorException, IOException {
-    OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().connectionPool(requestHttp.getRequestHttpClient());
-    //设置代理
-    if (requestHttp.getRequestHttpProxy() != null) {
-      clientBuilder.proxy(requestHttp.getRequestHttpProxy().getProxy());
-    }
-    //设置授权
-    clientBuilder.authenticator(new Authenticator() {
-      @Override
-      public Request authenticate(Route route, Response response) throws IOException {
-        String credential = Credentials.basic(requestHttp.getRequestHttpProxy().getProxyUsername(), requestHttp.getRequestHttpProxy().getProxyPassword());
-        return response.request().newBuilder()
-          .header("Authorization", credential)
-          .build();
-      }
-    });
     //得到httpClient
-    OkHttpClient client = clientBuilder.build();
+    OkHttpClient client = requestHttp.getRequestHttpClient();
 
 
     if (material == null) {

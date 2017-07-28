@@ -9,6 +9,8 @@ import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import me.chanjar.weixin.mp.util.http.QrCodeRequestExecutor;
 
 import okhttp3.*;
+import okio.BufferedSink;
+import okio.Okio;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -19,31 +21,16 @@ import java.util.UUID;
 /**
  * Created by ecoolper on 2017/5/5.
  */
-public class OkhttpQrCodeRequestExecutor extends QrCodeRequestExecutor<ConnectionPool, OkHttpProxyInfo> {
+public class OkhttpQrCodeRequestExecutor extends QrCodeRequestExecutor<OkHttpClient, OkHttpProxyInfo> {
   public OkhttpQrCodeRequestExecutor(RequestHttp requestHttp) {
     super(requestHttp);
   }
 
   @Override
   public File execute(String uri, WxMpQrCodeTicket data) throws WxErrorException, IOException {
-    OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().connectionPool(requestHttp.getRequestHttpClient());
-    //设置代理
-    if (requestHttp.getRequestHttpProxy() != null) {
-      clientBuilder.proxy(requestHttp.getRequestHttpProxy().getProxy());
-    }
-    //设置授权
-    clientBuilder.authenticator(new Authenticator() {
-      @Override
-      public Request authenticate(Route route, Response response) throws IOException {
-        String credential = Credentials.basic(requestHttp.getRequestHttpProxy().getProxyUsername(), requestHttp.getRequestHttpProxy().getProxyPassword());
-        return response.request().newBuilder()
-          .header("Authorization", credential)
-          .build();
-      }
-    });
-    //得到httpClient
-    OkHttpClient client = clientBuilder.build();
 
+    //得到httpClient
+    OkHttpClient client = requestHttp.getRequestHttpClient();
     Request request = new Request.Builder().url(uri).get().build();
     Response response = client.newCall(request).execute();
     String contentTypeHeader = response.header("Content-Type");
@@ -51,8 +38,10 @@ public class OkhttpQrCodeRequestExecutor extends QrCodeRequestExecutor<Connectio
       String responseContent = response.body().string();
       throw new WxErrorException(WxError.fromJson(responseContent));
     }
-    try (InputStream inputStream = new ByteArrayInputStream(response.body().bytes())) {
-      return FileUtils.createTmpFile(inputStream, UUID.randomUUID().toString(), "jpg");
+    File temp = File.createTempFile(UUID.randomUUID().toString(), ".png");
+    try (BufferedSink sink = Okio.buffer(Okio.sink(temp))) {
+      sink.writeAll(response.body().source());
     }
+    return temp;
   }
 }
