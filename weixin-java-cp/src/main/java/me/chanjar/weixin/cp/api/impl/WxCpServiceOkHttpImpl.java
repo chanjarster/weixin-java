@@ -7,10 +7,14 @@ import me.chanjar.weixin.common.util.http.HttpType;
 import me.chanjar.weixin.common.util.http.okhttp.OkHttpProxyInfo;
 import me.chanjar.weixin.cp.config.WxCpConfigStorage;
 import okhttp3.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class WxCpServiceOkHttpImpl extends AbstractWxCpServiceImpl<OkHttpClient, OkHttpProxyInfo> {
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
   protected OkHttpClient httpClient;
   protected OkHttpProxyInfo httpProxy;
 
@@ -32,6 +36,7 @@ public class WxCpServiceOkHttpImpl extends AbstractWxCpServiceImpl<OkHttpClient,
 
   @Override
   public String getAccessToken(boolean forceRefresh) throws WxErrorException {
+    logger.debug("WxCpServiceOkHttpImpl is running");
     if (forceRefresh) {
       this.configStorage.expireAccessToken();
     }
@@ -72,6 +77,7 @@ public class WxCpServiceOkHttpImpl extends AbstractWxCpServiceImpl<OkHttpClient,
 
   @Override
   public void initHttp() {
+    logger.debug("WxCpServiceOkHttpImpl initHttp");
     OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
     //设置代理
     if (httpProxy != null) {

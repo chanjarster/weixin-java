@@ -5,6 +5,8 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.util.http.RequestHttp;
 import me.chanjar.weixin.common.util.http.SimplePostRequestExecutor;
 import okhttp3.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -12,6 +14,7 @@ import java.io.IOException;
  * Created by ecoolper on 2017/5/4.
  */
 public class OkHttpSimplePostRequestExecutor extends SimplePostRequestExecutor<OkHttpClient, OkHttpProxyInfo> {
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   public OkHttpSimplePostRequestExecutor(RequestHttp requestHttp) {
     super(requestHttp);
@@ -19,7 +22,7 @@ public class OkHttpSimplePostRequestExecutor extends SimplePostRequestExecutor<O
 
   @Override
   public String execute(String uri, String postEntity) throws WxErrorException, IOException {
-
+    logger.debug("OkHttpSimplePostRequestExecutor running");
     //得到httpClient
     OkHttpClient client = requestHttp.getRequestHttpClient();
 

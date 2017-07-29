@@ -10,6 +10,8 @@ import okhttp3.*;
 import okio.BufferedSink;
 import okio.Okio;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
@@ -17,12 +19,15 @@ import java.io.*;
  * Created by ecoolper on 2017/5/5.
  */
 public class OkhttpMaterialVoiceAndImageDownloadRequestExecutor extends MaterialVoiceAndImageDownloadRequestExecutor<OkHttpClient, OkHttpProxyInfo> {
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
   public OkhttpMaterialVoiceAndImageDownloadRequestExecutor(RequestHttp requestHttp, File tmpDirFile) {
     super(requestHttp, tmpDirFile);
   }
 
   @Override
   public InputStream execute(String uri, String materialId) throws WxErrorException, IOException {
+    logger.debug("OkhttpMaterialVoiceAndImageDownloadRequestExecutor is running");
     OkHttpClient client = requestHttp.getRequestHttpClient();
     RequestBody requestBody = new FormBody.Builder().add("media_id", materialId).build();
     Request request = new Request.Builder().url(uri).get().post(requestBody).build();

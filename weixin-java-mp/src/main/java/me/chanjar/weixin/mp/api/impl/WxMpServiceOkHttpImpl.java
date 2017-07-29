@@ -8,11 +8,16 @@ import me.chanjar.weixin.common.util.http.okhttp.OkHttpProxyInfo;
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;
 import okhttp3.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.concurrent.locks.Lock;
 
 public class WxMpServiceOkHttpImpl extends AbstractWxMpServiceImpl<OkHttpClient, OkHttpProxyInfo> {
+
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
   private OkHttpClient httpClient;
   private OkHttpProxyInfo httpProxy;
 
@@ -33,6 +38,7 @@ public class WxMpServiceOkHttpImpl extends AbstractWxMpServiceImpl<OkHttpClient,
 
   @Override
   public String getAccessToken(boolean forceRefresh) throws WxErrorException {
+    logger.debug("WxMpServiceOkHttpImpl is running");
     Lock lock = this.getWxMpConfigStorage().getAccessTokenLock();
     try {
       lock.lock();
@@ -66,26 +72,27 @@ public class WxMpServiceOkHttpImpl extends AbstractWxMpServiceImpl<OkHttpClient,
 
   @Override
   public void initHttp() {
+    logger.debug("WxMpServiceOkHttpImpl initHttp");
     WxMpConfigStorage configStorage = this.getWxMpConfigStorage();
 
     if (configStorage.getHttpProxyHost() != null && configStorage.getHttpProxyPort() > 0) {
-      httpProxy =  OkHttpProxyInfo.socks5Proxy(configStorage.getHttpProxyHost(), configStorage.getHttpProxyPort(), configStorage.getHttpProxyUsername(), configStorage.getHttpProxyPassword());
+      httpProxy = OkHttpProxyInfo.socks5Proxy(configStorage.getHttpProxyHost(), configStorage.getHttpProxyPort(), configStorage.getHttpProxyUsername(), configStorage.getHttpProxyPassword());
     }
     OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
     //设置代理
     if (httpProxy != null) {
       clientBuilder.proxy(getRequestHttpProxy().getProxy());
 
-    //设置授权
-    clientBuilder.authenticator(new Authenticator() {
-      @Override
-      public Request authenticate(Route route, Response response) throws IOException {
-        String credential = Credentials.basic(httpProxy.getProxyUsername(), httpProxy.getProxyPassword());
-        return response.request().newBuilder()
-          .header("Authorization", credential)
-          .build();
-      }
-    });
+      //设置授权
+      clientBuilder.authenticator(new Authenticator() {
+        @Override
+        public Request authenticate(Route route, Response response) throws IOException {
+          String credential = Credentials.basic(httpProxy.getProxyUsername(), httpProxy.getProxyPassword());
+          return response.request().newBuilder()
+            .header("Authorization", credential)
+            .build();
+        }
+      });
     }
     httpClient = clientBuilder.build();
   }

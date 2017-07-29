@@ -6,6 +6,8 @@ import me.chanjar.weixin.common.util.http.RequestHttp;
 import me.chanjar.weixin.common.util.http.okhttp.OkHttpProxyInfo;
 import me.chanjar.weixin.mp.util.http.MaterialDeleteRequestExecutor;
 import okhttp3.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -13,6 +15,7 @@ import java.io.IOException;
  * Created by ecoolper on 2017/5/5.
  */
 public class OkhttpMaterialDeleteRequestExecutor extends MaterialDeleteRequestExecutor<OkHttpClient, OkHttpProxyInfo> {
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
   public OkhttpMaterialDeleteRequestExecutor(RequestHttp requestHttp) {
@@ -21,6 +24,7 @@ public class OkhttpMaterialDeleteRequestExecutor extends MaterialDeleteRequestEx
 
   @Override
   public Boolean execute(String uri, String materialId) throws WxErrorException, IOException {
+    logger.debug("OkhttpMaterialDeleteRequestExecutor is running");
     //得到httpClient
     OkHttpClient client = requestHttp.getRequestHttpClient();
 

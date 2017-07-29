@@ -9,6 +9,8 @@ import okhttp3.*;
 import okio.BufferedSink;
 import okio.Okio;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -21,6 +23,7 @@ import java.util.regex.Pattern;
  * Created by ecoolper on 2017/5/5.
  */
 public class OkHttpMediaDownloadRequestExecutor extends MediaDownloadRequestExecutor<OkHttpClient, OkHttpProxyInfo> {
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
   public OkHttpMediaDownloadRequestExecutor(RequestHttp requestHttp, File tmpDirFile) {
@@ -29,6 +32,7 @@ public class OkHttpMediaDownloadRequestExecutor extends MediaDownloadRequestExec
 
   @Override
   public File execute(String uri, String queryParam) throws WxErrorException, IOException {
+    logger.debug("OkHttpMediaDownloadRequestExecutor is running");
     if (queryParam != null) {
       if (uri.indexOf('?') == -1) {
         uri += '?';
@@ -37,7 +41,7 @@ public class OkHttpMediaDownloadRequestExecutor extends MediaDownloadRequestExec
     }
 
     //得到httpClient
-    OkHttpClient client =requestHttp.getRequestHttpClient();
+    OkHttpClient client = requestHttp.getRequestHttpClient();
 
     Request request = new Request.Builder().url(uri).get().build();
 
@@ -54,7 +58,7 @@ public class OkHttpMediaDownloadRequestExecutor extends MediaDownloadRequestExec
       return null;
     }
     String[] nameAndExt = fileName.split("\\.");
-    File file = File.createTempFile(nameAndExt[0], nameAndExt[1],super.tmpDirFile);
+    File file = File.createTempFile(nameAndExt[0], nameAndExt[1], super.tmpDirFile);
     try (BufferedSink sink = Okio.buffer(Okio.sink(file))) {
       sink.writeAll(response.body().source());
     }

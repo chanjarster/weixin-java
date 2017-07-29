@@ -11,6 +11,8 @@ import me.chanjar.weixin.mp.util.http.QrCodeRequestExecutor;
 import okhttp3.*;
 import okio.BufferedSink;
 import okio.Okio;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -22,13 +24,15 @@ import java.util.UUID;
  * Created by ecoolper on 2017/5/5.
  */
 public class OkhttpQrCodeRequestExecutor extends QrCodeRequestExecutor<OkHttpClient, OkHttpProxyInfo> {
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
   public OkhttpQrCodeRequestExecutor(RequestHttp requestHttp) {
     super(requestHttp);
   }
 
   @Override
   public File execute(String uri, WxMpQrCodeTicket data) throws WxErrorException, IOException {
-
+    logger.debug("OkhttpQrCodeRequestExecutor is running");
     //得到httpClient
     OkHttpClient client = requestHttp.getRequestHttpClient();
     Request request = new Request.Builder().url(uri).get().build();

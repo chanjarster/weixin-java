@@ -7,6 +7,8 @@ import me.chanjar.weixin.common.util.http.okhttp.OkHttpProxyInfo;
 import me.chanjar.weixin.mp.bean.material.WxMpMaterialVideoInfoResult;
 import me.chanjar.weixin.mp.util.http.MaterialVideoInfoRequestExecutor;
 import okhttp3.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -14,13 +16,15 @@ import java.io.IOException;
  * Created by ecoolper on 2017/5/5.
  */
 public class OkhttpMaterialVideoInfoRequestExecutor extends MaterialVideoInfoRequestExecutor<OkHttpClient, OkHttpProxyInfo> {
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
   public OkhttpMaterialVideoInfoRequestExecutor(RequestHttp requestHttp) {
     super(requestHttp);
   }
 
   @Override
   public WxMpMaterialVideoInfoResult execute(String uri, String materialId) throws WxErrorException, IOException {
-
+    logger.debug("OkhttpMaterialVideoInfoRequestExecutor is running");
     //得到httpClient
     OkHttpClient client = requestHttp.getRequestHttpClient();
 

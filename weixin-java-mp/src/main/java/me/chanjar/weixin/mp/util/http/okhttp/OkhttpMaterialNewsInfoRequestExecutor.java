@@ -17,6 +17,7 @@ import java.io.IOException;
  * Created by ecoolper on 2017/5/5.
  */
 public class OkhttpMaterialNewsInfoRequestExecutor extends MaterialNewsInfoRequestExecutor<OkHttpClient, OkHttpProxyInfo> {
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
   public OkhttpMaterialNewsInfoRequestExecutor(RequestHttp requestHttp) {
     super(requestHttp);
   }
