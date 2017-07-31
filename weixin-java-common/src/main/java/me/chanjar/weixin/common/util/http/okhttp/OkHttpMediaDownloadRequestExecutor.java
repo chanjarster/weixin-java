@@ -63,6 +63,7 @@ public class OkHttpMediaDownloadRequestExecutor extends MediaDownloadRequestExec
       sink.writeAll(response.body().source());
     }
     file.deleteOnExit();
+    return file;
   }
 
   private String getFileName(Response response) throws WxErrorException {
