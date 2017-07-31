@@ -47,6 +47,7 @@ public class OkhttpQrCodeRequestExecutor extends QrCodeRequestExecutor<OkHttpCli
       sink.writeAll(response.body().source());
     }
     temp.deleteOnExit();
+
     return temp;
   }
 }
