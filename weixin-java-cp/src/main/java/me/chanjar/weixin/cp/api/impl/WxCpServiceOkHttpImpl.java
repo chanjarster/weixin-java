@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public class WxCpServiceOkHttpImpl extends WxCpServiceAbstractImpl<OkHttpClient, OkHttpProxyInfo> {
+public class WxCpServiceOkHttpImpl extends AbstractWxCpServiceImpl<OkHttpClient, OkHttpProxyInfo> {
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   protected OkHttpClient httpClient;
@@ -37,7 +37,10 @@ public class WxCpServiceOkHttpImpl extends WxCpServiceAbstractImpl<OkHttpClient,
   @Override
   public String getAccessToken(boolean forceRefresh) throws WxErrorException {
     logger.debug("WxCpServiceOkHttpImpl is running");
-    if (this.configStorage.isAccessTokenExpired() || forceRefresh) {
+    if (forceRefresh) {
+      this.configStorage.expireAccessToken();
+    }
+    if (this.configStorage.isAccessTokenExpired()) {
       synchronized (this.globalAccessTokenRefreshLock) {
         if (this.configStorage.isAccessTokenExpired()) {
           String url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?"

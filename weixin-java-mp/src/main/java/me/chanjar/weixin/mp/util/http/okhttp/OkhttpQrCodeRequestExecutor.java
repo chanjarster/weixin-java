@@ -46,8 +46,6 @@ public class OkhttpQrCodeRequestExecutor extends QrCodeRequestExecutor<OkHttpCli
     try (BufferedSink sink = Okio.buffer(Okio.sink(temp))) {
       sink.writeAll(response.body().source());
     }
-    temp.deleteOnExit();
-
     return temp;
   }
 }
