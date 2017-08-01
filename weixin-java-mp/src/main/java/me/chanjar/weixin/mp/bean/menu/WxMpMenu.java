@@ -16,7 +16,8 @@ import java.util.List;
  * @author <a href="https://github.com/binarywang">binarywang(Binary Wang)</a>
  * </pre>
  */
-public class WxMpMenu implements Serializable {
+public class WxMpMenu implements Serializable{
+
   private static final long serialVersionUID = -5794350513426702252L;
 
   @SerializedName("menu")
@@ -54,9 +55,7 @@ public class WxMpMenu implements Serializable {
     return WxGsonBuilder.create().toJson(this);
   }
 
-  public static class WxMpConditionalMenu implements Serializable {
-    private static final long serialVersionUID = -2279946921755382289L;
-
+  public static class WxMpConditionalMenu {
     @SerializedName("button")
     private List<WxMenuButton> buttons;
     @SerializedName("matchrule")
