@@ -1,5 +1,6 @@
 package me.chanjar.weixin.mp.bean;
 
+import me.chanjar.weixin.common.util.ToStringUtils;
 import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
 
 import java.io.Serializable;
@@ -12,11 +13,12 @@ import java.util.List;
  * @author chanjarster
  */
 public class WxMpMassNews implements Serializable {
+  private static final long serialVersionUID = 565937155013581016L;
 
-  private List<WxMpMassNewsArticle> articles = new ArrayList<WxMpMassNewsArticle>();
+  private List<WxMpMassNewsArticle> articles = new ArrayList<>();
 
   public List<WxMpMassNewsArticle> getArticles() {
-    return articles;
+    return this.articles;
   }
 
   public void addArticle(WxMpMassNewsArticle article) {
@@ -28,7 +30,12 @@ public class WxMpMassNews implements Serializable {
   }
 
   public boolean isEmpty() {
-    return articles == null || articles.isEmpty();
+    return this.articles == null || this.articles.isEmpty();
+  }
+
+  @Override
+  public String toString() {
+    return ToStringUtils.toSimpleString(this);
   }
 
   /**
@@ -76,7 +83,7 @@ public class WxMpMassNews implements Serializable {
     private boolean showCoverPic;
 
     public String getThumbMediaId() {
-      return thumbMediaId;
+      return this.thumbMediaId;
     }
 
     public void setThumbMediaId(String thumbMediaId) {
@@ -84,7 +91,7 @@ public class WxMpMassNews implements Serializable {
     }
 
     public String getAuthor() {
-      return author;
+      return this.author;
     }
 
     public void setAuthor(String author) {
@@ -92,7 +99,7 @@ public class WxMpMassNews implements Serializable {
     }
 
     public String getTitle() {
-      return title;
+      return this.title;
     }
 
     public void setTitle(String title) {
@@ -100,7 +107,7 @@ public class WxMpMassNews implements Serializable {
     }
 
     public String getContentSourceUrl() {
-      return contentSourceUrl;
+      return this.contentSourceUrl;
     }
 
     public void setContentSourceUrl(String contentSourceUrl) {
@@ -108,7 +115,7 @@ public class WxMpMassNews implements Serializable {
     }
 
     public String getContent() {
-      return content;
+      return this.content;
     }
 
     public void setContent(String content) {
@@ -116,7 +123,7 @@ public class WxMpMassNews implements Serializable {
     }
 
     public String getDigest() {
-      return digest;
+      return this.digest;
     }
 
     public void setDigest(String digest) {
@@ -124,7 +131,7 @@ public class WxMpMassNews implements Serializable {
     }
 
     public boolean isShowCoverPic() {
-      return showCoverPic;
+      return this.showCoverPic;
     }
 
     public void setShowCoverPic(boolean showCoverPic) {
@@ -133,14 +140,7 @@ public class WxMpMassNews implements Serializable {
 
     @Override
     public String toString() {
-      return "WxMpMassNewsArticle [" + "thumbMediaId=" + thumbMediaId + ", author=" + author + ", title=" + title +
-          ", contentSourceUrl=" + contentSourceUrl + ", content=" + content + ", digest=" + digest +
-          ", showCoverPic=" + showCoverPic + "]";
+      return ToStringUtils.toSimpleString(this);
     }
-  }
-
-  @Override
-  public String toString() {
-    return "WxMpMassNews [" + "articles=" + articles + "]";
   }
 }

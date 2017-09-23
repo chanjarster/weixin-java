@@ -1,13 +1,18 @@
 package me.chanjar.weixin.mp.bean;
 
 
+import me.chanjar.weixin.common.util.ToStringUtils;
+
+import java.io.Serializable;
+
 /**
  * 微信卡券
  *
  * @author YuJian
  * @version 15/11/11
  */
-public class WxMpCard {
+public class WxMpCard implements Serializable{
+  private static final long serialVersionUID = 9214301870017772921L;
 
   private String cardId;
 
@@ -20,7 +25,7 @@ public class WxMpCard {
   private Boolean canConsume;
 
   public String getCardId() {
-    return cardId;
+    return this.cardId;
   }
 
   public void setCardId(String cardId) {
@@ -28,7 +33,7 @@ public class WxMpCard {
   }
 
   public Long getBeginTime() {
-    return beginTime;
+    return this.beginTime;
   }
 
   public void setBeginTime(Long beginTime) {
@@ -36,7 +41,7 @@ public class WxMpCard {
   }
 
   public Long getEndTime() {
-    return endTime;
+    return this.endTime;
   }
 
   public void setEndTime(Long endTime) {
@@ -44,7 +49,7 @@ public class WxMpCard {
   }
 
   public String getUserCardStatus() {
-    return userCardStatus;
+    return this.userCardStatus;
   }
 
   public void setUserCardStatus(String userCardStatus) {
@@ -52,7 +57,7 @@ public class WxMpCard {
   }
 
   public Boolean getCanConsume() {
-    return canConsume;
+    return this.canConsume;
   }
 
   public void setCanConsume(Boolean canConsume) {
@@ -61,12 +66,6 @@ public class WxMpCard {
 
   @Override
   public String toString() {
-    return "WxMpCard{" +
-        "cardId='" + cardId + '\'' +
-        ", beginTime=" + beginTime +
-        ", endTime=" + endTime +
-        ", userCardStatus='" + userCardStatus + '\'' +
-        ", canConsume=" + canConsume +
-        '}';
+    return ToStringUtils.toSimpleString(this);
   }
 }
